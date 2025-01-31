@@ -32,3 +32,44 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const text = "4190 Project Site";
+    const speed = 100; // Typing speed 
+    const delayBeforeDeleting = 1500; // Pause before deleting 
+    const deletingSpeed = 50; // Delete effect speed
+    const restartDelay = 1000; // Pause before restarting 
+    let i = 0;
+    let target = document.getElementById("typewriter-text");
+
+    function typeWriter() {
+        if (i < text.length) {
+            target.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, speed);
+        } else {
+            setTimeout(deleteText, delayBeforeDeleting);
+        }
+    }
+
+    function deleteText() {
+        if (i > 0) {
+            target.innerHTML = text.substring(0, i - 1);
+            i--;
+            setTimeout(deleteText, deletingSpeed);
+        } else {
+            setTimeout(startTypewriter, restartDelay); // Restart after delete
+        }
+    }
+
+    function startTypewriter() {
+        i = 0;
+        target.innerHTML = "";
+        typeWriter();
+    }
+
+    startTypewriter(); // Start typewriter
+});

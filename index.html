@@ -43,15 +43,16 @@
             <!-- About-->
             <section class="resume-section" id="about">
                 <div class="resume-section-content">
+
                     <h1 class="mb-0">
-                        MAE
-                        <span class="text-primary">4190 Project Site</span>
+                        MAE <span class="text-primary typewriter" id="typewriter-text"></span>
                     </h1>
+                   
                     <div class="subheading mb-5">
                         Evan Leong · Ithaca, NY ·
                         <a href="mailto:epleon36@gmail.com">epleon36@gmail.com</a>
                     </div>
-                    <p class="lead mb-5">Welcome! This is my project course page for MAE 4190: Fast Robots. I'm currently a senior at Cornell majoring in Computer Science with a minor in Mechanical Engineering. I am experienced in leveraging agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.</p>
+                    <p class="lead mb-5">Welcome! This is my project course page for MAE 4190: Fast Robots. I'm currently a senior at Cornell majoring in Computer Science with a minor in Mechanical Engineering. I enjoy rock climbing, baking, and petting dogs in my free time.</p>
                     <div class="social-icons d-flex justify-content-start align-items-center">
                         <div class = "d-flex flex-column justify-content-center">
                             <a class="social-icon" href="https://www.linkedin.com/in/evanleong1/"><i class="fab fa-linkedin-in"></i></a>
@@ -173,10 +174,38 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 3</h3>
                             <div class="subheading mb-3">Get_Time_Millis</div>
-                            <p> I then wrote </p>
+                            <p> I then wrote a new command called GET_TIME_MILLIS that utilizes Arduino's millis() function and uploaded it to the Nano. </p>
+                            <script src="https://gist.github.com/evnleong/05ddb4cdddc3ac0047dfaa21e5392ffb.js"></script>
+                            
+                            <img src = "assets/img/lab1/get_millis_py.png" class = "img-fluid mb-3">
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 4 & 5</h3>
+                            <div class="subheading mb-3">Notification Handler</div>
+                            <p> In my Jupyter Notebook, I used the bleak package's 'start_notify' function to start notifications on the ['RX_STRING'] uuid, and created a callback function called 'notification_handler' to convert the received byte arrays into printable strings.</p>
+                            <img src="assets/img/lab1/notification_handler.png" class = "img-fluid mb-3">
+                            <p> I then wrote a loop function for my Arduino sketch that would continually send the current program time from the board using the millis() function for 10 seconds. </p>
+                            <script src="https://gist.github.com/evnleong/8cc05399087eba1d3ea99694fe51a211.js"></script>
+                            <img src = "assets/img/lab1/send_loop_received.png" class = "img-fluid mb-3">
+                            <p> To calculate the effective data transfer rate, I modified my callback function to append the received messages to a Python list. I could then measure the length of the list to find the effective data transfer rate. </p>
+                            <img src = "assets/img/lab1/effective_data_transfer.png" class = "img-fluid mb-3">
+                            <p> As shown above, in the 10 seconds, the Nano was able to send 253 messages, or 25.3 messages per second. Each transmission consisted of 1 float, or 32 bits/4 bytes of data, so the effective data transfer rate for my method was approximately 101 bytes per second.
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 6</h3>
+                            <div class="subheading mb-3">SEND_TIME_DATA</div>
+
+
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+                    
                 </div>
             </section>
             <hr class="m-0" />
@@ -335,3 +364,6 @@
         <script src="js/scripts.js"></script>
     </body>
 </html>
+
+
+
