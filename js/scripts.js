@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const text = "4190 Project Site";
+    const text = "4190: Fast Robots";
     const speed = 100; // Typing speed 
     const delayBeforeDeleting = 1500; // Pause before deleting 
     const deletingSpeed = 50; // Delete effect speed
