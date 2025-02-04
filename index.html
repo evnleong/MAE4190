@@ -14,6 +14,9 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <script type="text/javascript" async 
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -87,7 +90,7 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 1</h3>
                             <div class="subheading mb-3">Blink Test</div>
-                            <iframe src="https://drive.google.com/file/d/1YEn0QTu4YY1NJHjkGgHz0WDGWPu_YShs/preview" width="320" height="240" allow="autoplay"></iframe>
+                            <iframe src="https://drive.google.com/file/d/1YEn0QTu4YY1NJHjkGgHz0WDGWPu_YShs/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
                             <p>Verified Artemis Nano functionality with Arduino's Blink sketch example.</p>
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
@@ -96,7 +99,7 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 2</h3>
                             <div class="subheading mb-3">Serial Echo Test</div>
-                            <iframe src="https://drive.google.com/file/d/1YKod5bwDx5K10vln7CG0MOWNtydJuIsH/preview" width="320" height="240" allow="autoplay"></iframe>
+                            <iframe src="https://drive.google.com/file/d/1YKod5bwDx5K10vln7CG0MOWNtydJuIsH/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
                             <p>Verified functionality of serial communication with the Artemis Nano Board using Sparkfun's serial sketch. </p>
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
@@ -105,8 +108,8 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 3 </h3>
                             <div class="subheading mb-3">ADC Temperature Sensor Test</div>
-                            <iframe src="https://drive.google.com/file/d/1Xtx1jVAsjfpLShl3dSzs13xoxG38nBUg/preview" width="320" height="240" allow="autoplay"></iframe>
-                            <p>Verified functionality of onboard ADC using Sparkfun's Temperature example sketch.</p>
+                            <iframe src="https://drive.google.com/file/d/1Xtx1jVAsjfpLShl3dSzs13xoxG38nBUg/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
+                            <p>Verified functionality of the onboard ADC using Sparkfun's Temperature example sketch.</p>
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
@@ -114,8 +117,8 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 4 </h3>
                             <div class="subheading mb-3">Microphone Test</div>
-                            <iframe src="https://drive.google.com/file/d/1YjZOOAgOkHeqOGh4sgTiNilrtEc8C3i4/preview" width="320" height="240" allow="autoplay"></iframe>
-                            <p>Verified functionality of onboard microphone using Sparkfun's Microphone example sketch by attempting to whistle.</p>
+                            <iframe src="https://drive.google.com/file/d/1YjZOOAgOkHeqOGh4sgTiNilrtEc8C3i4/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
+                            <p>Verified functionality of onboard microphone using Sparkfun's Microphone example sketch using my attempts to whistle.</p>
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
@@ -132,6 +135,12 @@
                             <div class="subheading mb-3">Environment Setup</div>
                             <p> I already had Python's virtualenv package installed, so I created a new directory for Lab 1, initialized a venv named 'FastRobots_ble', and installed the required packages with pip.</p>
                             <img src="assets/img/lab1/venv.png" alt="virtual environment check" class ="img-fluid mb-3">
+                            <div class="subheading mb-3">Codebase</div>
+                            <p> BLE stands for Bluetooth Low Energy, a communication protocol for wireless communication between devices that consumes little power. 
+                                BLE utilizes the GATT profile, which is a peripheral-central model that defines device interactions. In our codebase, after establishing a Bluetooth connection to the Nano, the functions provided through imports in the 'demo.ipynb' allow us to read, write, and subscribe to characteristics that are advertised by our Nano board. 
+                                The Nano runs 'ble_arduino.ino', which contains the RobotCommand class used to parse incoming commands from the laptop client, 
+                                and a switch statement (defined in handle_command()) to determine and execute the corresponding commands that we will implement throughout the lab. 
+                            </p>
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
@@ -164,7 +173,7 @@
                             <h3 class="mb-0">Task 2</h3>
                             <div class="subheading mb-3">Send_Three_Floats</div>
                             <script src="https://gist.github.com/evnleong/eb33ede6cdef7e5f52797377ac2eaa30.js"></script>
-                            <p>I then added the above code to loop through 3 received characters, and appending them to an array, printing out the 3 received floats.</p>
+                            <p>I then added the above code to loop through 3 received characters, append them to an array, and print out the 3 received floats.</p>
                             <img src = "assets/img/lab1/send_3_floats_py.png" alt = "floats sent" class = "img-fluid mb-3"> 
                             <img src = "assets/img/lab1/send_3_floats_received.png" alt = "floats received" class = "img-fluid mb-3"> 
                         </div>
@@ -174,9 +183,9 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 3</h3>
                             <div class="subheading mb-3">Get_Time_Millis</div>
-                            <p> I then wrote a new command called GET_TIME_MILLIS that utilizes Arduino's millis() function and uploaded it to the Nano. </p>
+                            <p> I then wrote a new command called GET_TIME_MILLIS that utilizes Arduino's millis() function to get the current program time and uploaded it to the Nano. </p>
                             <script src="https://gist.github.com/evnleong/05ddb4cdddc3ac0047dfaa21e5392ffb.js"></script>
-                            
+                            <p> This is the resulting output retreived by the Jupyter Notebook:</p>
                             <img src = "assets/img/lab1/get_millis_py.png" class = "img-fluid mb-3">
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
@@ -190,18 +199,103 @@
                             <p> I then wrote a loop function for my Arduino sketch that would continually send the current program time from the board using the millis() function for 10 seconds. </p>
                             <script src="https://gist.github.com/evnleong/8cc05399087eba1d3ea99694fe51a211.js"></script>
                             <img src = "assets/img/lab1/send_loop_received.png" class = "img-fluid mb-3">
-                            <p> To calculate the effective data transfer rate, I modified my callback function to append the received messages to a Python list. I could then measure the length of the list to find the effective data transfer rate. </p>
+                            <p> To calculate the effective data transfer rate, I modified my callback function to append the received messages to a Python list. I could then measure the length of the list to estimate the effective data transfer rate. </p>
                             <img src = "assets/img/lab1/effective_data_transfer.png" class = "img-fluid mb-3">
-                            <p> As shown above, in the 10 seconds, the Nano was able to send 253 messages, or 25.3 messages per second. Each transmission consisted of 1 float, or 32 bits/4 bytes of data, so the effective data transfer rate for my method was approximately 101 bytes per second.
-                        </div>
+                            <p>
+                                As shown above, in the 10 seconds, the Nano was able to send 253 messages (as measured by the length of the list), or 25.3 messages per second. 
+                                Each transmission consisted of 1 float, or 32 bits (4 bytes) of data. The effective data transfer rate for my method was approximately:
+                            </p>
+                            <p>
+                                \[
+                                \frac{253}{10} = 25.3 \, \text{messages/second}
+                                \]
+                            </p>
+                            <p>
+                                The total data transfer rate in bytes per second is:
+                            </p>
+                            <p>
+                                \[
+                                25.3 \times 4 = 101 \, \text{bytes/second}
+                                \]
+                        
+                            </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 6</h3>
                             <div class="subheading mb-3">SEND_TIME_DATA</div>
+                            <p>For this task, instead of sending time measurements as soon as my board sampled them, I added the following function called 'SEND_TIME_DATA' to my Arduino sketch:</p>
+                            <script src="https://gist.github.com/evnleong/107268e948a9cb514ee7161007aa9f73.js"></script>
+                            <p> This function utilizes two global variables, 'timearray' and 'datasize'. 'timearray' is an empty float array initialized with size 'datasize' (in this case, my datasize was 50). 
+                            The function loops up to the size of 'datasize' to guard against overfilling the array, and fills 'timearray' with 50 sequential time samplings. </p>
+                            <p>It then loops through the 'timearray' and sends each reading as a formatted timestamp string.</p>
+                            <img src="assets/img/lab1/time_stamps.png" class = "img-fluid mb-3"> 
+                            <p>On the Jupyter Notebook, I called the 'SEND_TIME_DATA' function, and initiated the notification handler, 
+                            which processed the incoming data and again appended the received data into a Python list which I could measure to ensure all 50 measurements had been sent over.</p>
+                            <img src="assets/img/lab1/50_messages_received.png" class = "img-fluid mb-3"> 
+                            <p> No lost measurements!</p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
 
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 7</h3>
+                            <div class="subheading mb-3">GET_TEMP_READINGS</div>
+                            <p>In a similar fashion, I created a new function in my Arduino sketch called GET_TEMP_READINGS:</p>
+                            <p>This function samples the time and temperature each 50 times, and stored each set of 50 samples into the global 'timearray' and 'temparray' variables.</p>
+                            <p>The function then loops through each array and sends the combined temperature readings to my laptop. </p>
+                            <script src="https://gist.github.com/evnleong/e260e1715f8adadd2b364d74568f44d3.js"></script>
+                            <p> I made a slight modification to the notification handler, prefixing "Temp Reading from Nano" to each temperature reading instead:</p>
+                            <img src = "assets/img/lab1/temp_reading_handler.png" class = "img-fluid mb-3">
+                            <p>On the Jupyter Notebook, I called the 'SEND_TIME_DATA' function, and initiated the notification handler to get the following results:</p>
+                            <img src="assets/img/lab1/temp_readings_received.png" class = "img-fluid mb-3">
 
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 8</h3>
+                            <div class="subheading mb-3">Discussion</div>
+                            <p class = "fw-bold text-secondary"> Discuss the differences between these two methods, the advantages and disadvantages of both and the potential scenarios that you might choose one method over the other.</p>
+                            <p>In the first method created in tasks 4 & 5, the speed at which data could be sent was limited by the sampling rate of the millis() and temperature functions. 
+                            The board physically cannot transmit the time or temp readings at a rate faster than the functions take to run.
+                            However, in the second method, where time and temperature measurements are precalculated and stored in arrays, the most direct limitation of the data transfer speed seems to 
+                            be the clock frequency of the Nano's CPU and however many CPU cycles it takes to append a reading from memory to the writeable GATT characteristic.</p>
+
+                            <p>I could see how the first method has an advantage of the data being closer to real-time measurements. In a real-time feedback use case, this would likely be the preferred choice between the two methods as the readings are more closely related to the physical time that the sampling was taken.
+                            However, a disadvantage of this method is the decreased speed of data transfer and increased possibility of disruptions when measurements are sent. In a case where we are okay with not receiving immediate feedback from our peripheral device, and we want to instead just need to analyze actions of the bot after they have taken place, the second method might be a more reliable and faster choice.
+                            A downside to this method however is the increased RAM utilization by creating extra data structures to hold measurements before sending them to the central device.
+
+                            <p class = "fw-bold text-secondary">How “quickly” can the second method record data?</p>
+    
+                            <p>
+                                The time taken to send the 50 messages was calculated using the recorded time difference between the first and last sample: 64 milliseconds. 
+                                Assuming this rate remains constant, the estimated message transfer speed of the Nano with this method is approximately 
+                                \( \frac{50}{0.064} \approx 781 \) messages per second. 
+                                Sending just one 4-byte float, this results in an effective data transfer speed of:
+                            </p>
+                            <p>
+                                \[
+                                781 \times 4 = 3,124 \text{ bytes/second}
+                                \]
+                            </p>
+                            <p class = "fw-bold text-secondary">The Artemis board has 384 kB of RAM. Approximately how much data can you store to send without running out of memory?</p>
+                            If the Artemis board has 384 kB of RAM, and we stored each value as a float, which each comprised of 4 bytes, we could theoretically store at most 96,000 total floats, or 48,000 total timestamp and temperature reading pairs before the board ran out of memory. 
+                            </p>
+
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Lab 1B Discussion</h3>
+                            <p>In this lab, I learned how to establish a BLE connection between my laptop and the Artemis Nano board, as well as how to create a notification handler to listen to changes on a specific GATT characteristic. </p>
+                            <p>I initially struggled with implementing the notification handler and deciphering its parameters, but reading the provided lab text in the Jupyter Notebook was really helpful in understanding its implementation.</p>
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
@@ -311,7 +405,7 @@
                             <h3 class="mb-0">Prelab</h3>
                             <div class="subheading mb-3">Environment Setup</div>
                             <p> I already had Python's virtualenv package installed, so I created a new directory for Lab 1, initialized a venv named 'FastRobots_ble', and installed the required packages with pip.</p>
-                           
+                            
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
