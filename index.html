@@ -14,9 +14,13 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
-        <script type="text/javascript" async 
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
-    </script>
+        <!-- Mathjax CDN -->
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <!-- Jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- Image Lightboxes-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -26,19 +30,21 @@
                 <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/profile_photo.jpg" alt="..." /></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse overflow-auto " id="navbarResponsive" style="max-height: 100vh;">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1a">Lab 1: Part A</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1b">Lab 1: Part B</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab2">Lab 2: IMU </a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Lab 3: ToF </a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#awards">Lab 4: Motor Drivers and Open Loop Control</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab5">Lab 5: Linear PID and Interpolation</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab6">Lab 6: Orientation PID</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab7">Lab 7: Kalman Filtering</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab8">Lab 8: Stunts!</a></li>
-                </ul>
+            <div class="collapse navbar-collapse outer " id="navbarResponsive" style = "max-height: 50vh" >
+                <div class = "inner">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1a">Lab 1: Part A</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1b">Lab 1: Part B</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab2">Lab 2: IMU </a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Lab 3: ToF </a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#awards">Lab 4: Motor Drivers and Open Loop Control</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab5">Lab 5: Linear PID and Interpolation</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab6">Lab 6: Orientation PID</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab7">Lab 7: Kalman Filtering</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab8">Lab 8: Stunts!</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
         <!-- Page Content-->
@@ -90,8 +96,8 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Task 1</h3>
                             <div class="subheading mb-3">Blink Test</div>
-                            <iframe src="https://drive.google.com/file/d/1YEn0QTu4YY1NJHjkGgHz0WDGWPu_YShs/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
-                            <p>Verified Artemis Nano functionality with Arduino's Blink sketch example.</p>
+                            <iframe src="https://drive.google.com/file/d/1YEn0QTu4YY1NJHjkGgHz0WDGWPu_YShs/preview" width="320" height="240" allow="autoplay" allowfullscreen ></iframe>
+                            <p >Verified Artemis Nano functionality with Arduino's Blink sketch example.</p>
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
                     </div>
@@ -307,34 +313,305 @@
             <section class="resume-section" id="lab2">
                 <div class="resume-section-content">
                     <h2 class="mb-5">Lab 2: IMU</h2>
-                    <div class="subheading mb-3">Programming Languages & Tools</div>
-                    <ul class="list-inline dev-icons">
-                        <li class="list-inline-item"><i class="fab fa-html5"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-css3-alt"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-js-square"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-angular"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-react"></i></li>
-                        <li class="list-inline-item"><i class="fab fa-node-js"></i></li>
-                    </ul>
-                    <div class="subheading mb-3">Workflow</div>
-                    <ul class="fa-ul mb-0">
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Mobile-First, Responsive Design
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Cross Browser Testing & Debugging
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Cross Functional Teams
-                        </li>
-                        <li>
-                            <span class="fa-li"><i class="fas fa-check"></i></span>
-                            Agile Development & Scrum
-                        </li>
-                    </ul>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Setup</h3>
+                            <div class="subheading mb-3">Setting up the IMU</div>
+                            <p> I first installed the 'SparkFun 9DOF IMU Breakout_ICM 20948_Arduino Library' and connected the Nano to the IMU via QWIIC connection.</p>
+
+                            <div style="display: flex; justify-content: center;">
+                                
+                                <a href="assets/img/lab2/quiic.jpg" data-lightbox="gallery">
+                                    <img src="assets/img/lab2/quiic.jpg" class ="zoom-effect" width="400" alt="Thumbnail">
+                                </a>
+                
+                            </div>
+                            <p style ="text-align: center" > <i>Artemis QWIIC connection to IMU </i></p>
+
+                            <p class ="fw-bold"> Note the AD0_VAL definition. What does it represent, and should it be 0 or 1?</p>
+
+                            <p> The AD0_VAL definition represents the value of the last bit of the IMU's I2C address. Flipping this Address 0 bit is used to change the I2C address. 
+                                By default, this bit is set to 1 as the ADR jumper on my IMU is not soldered closed, but if I did solder the jumper closed, I would then need to flip the bit to 0.
+                             </p> 
+                            <p> I then added a visual blink indicator to the example code and uploaded it to the Nano: </p>
+                            
+                            <div style = "text-align: center">
+                                <iframe src="https://drive.google.com/file/d/1q0yLnIzXx5e8FVou3c-n1V-HmyMUkK-3/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
+                            </div>
+                            
+                            <p style = "text-align: center"> <i>Nano blinking 3 times on startup </i></p>
+                            <p class = "fw-bold">Check out the change in sensor values as you rotate, flip, and accelerate the board. Explain what you see in both acceleration and gyroscope data.</p>
+                            <p> The acccelerometer measures linear acceleration in the x, y, and z directions.
+                                When the accelerometer is lying flat and face up in the air, the acceleration in the z-direction being recorded is approximately 9.8 m/s^2 -- corresponding to acceleration due to gravity. 
+                                As I rotate the accelerometer to align with each axis, you can see as the graviational force begins to have a greater and greater component in that direction until peaking at the gravitational acceleration constant.</p>
+                            <div style = "text-align: center">
+                                <iframe src="https://drive.google.com/file/d/1R1nuykDzB17RRqXEVxpdAMEjkUfbmpfl/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
+                            </div> 
+                            <p> The gyroscope measures angular velocity, or the change in angle of the IMU over time. As I rotate the IMU around each axis, you can see the gyroscope values fluctuate (as the angle is changing with time) and settle at 0 when the angle of the IMU remains constant. </p>
+                         </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Accelerometer</h3>
+                            <div class="subheading mb-3"> Roll and Pitch </div>
+                            <p> Using the equations for deriving pitch and roll from linear accelerations in the x,y, and z directions covered in Lecture 4: </p>
+                                
+                            <p>
+                                We can calculate roll as:
+                                \[\theta = atan2(a_x, a_z)\]
+
+                                And pitch as:
+                                \[\phi = atan2(a_y, a_z)\]
+
+                            </p>
+                            <p> I added the following lines to output roll and pitch data:</p>
+                           
+                            <script src="https://gist.github.com/evnleong/441812b980013cce4787fbe847921872.js"></script>
+
+
+                            <p> I then tested the formulas at -90, 0, 90 degree rotations for both pitch and roll to see if the output made sense: </p>
+
+                            <div style = "text-align :center">
+                                <img src="assets/img/lab2/pitchroll0.png " height = "400" width = "400" class = "img-fluid mb-3">
+                            
+                            <p> <i> Pitch and Roll at 0 deg. </i></p>
+                            <img src="assets/img/lab2/pitch90roll0.png " height = "400" width = "400" class = "img-fluid mb-3">
+                            <p> <i> Pitch at 90 deg. and Roll at 0 deg. </i></p>
+                            <img src="assets/img/lab2/pitch-90roll0.png " height = "400" width = "400" class = "img-fluid mb-3">
+                            <p> <i> Pitch at -90 deg. and Roll at 0 deg. </i></p>
+                            <img src="assets/img/lab2/roll90pitch0.png " height = "400" width = "400" class = "img-fluid mb-3">
+                            <p> <i> Pitch at 0 deg. and Roll at 90 deg. </i></p>
+                            <img src="assets/img/lab2/roll-90pitch0.png " height = "400" width = "400" class = "img-fluid mb-3">
+                            <p> <i> Pitch at 0 deg and Roll at -90 deg. </i></p>
+
+                            </div>
+                           
+                            <div class="subheading mb-3"> Recording Data </div>
+                            <ul> 1. To record data, I created a 2 dimensional array in Arduino to store lists of Pitch, Roll, and Timestamp Data.</ul>
+                            <ul> 2. Dynamically allocating memory onto the heap, I was able to store 2048 data points, or approximately 5 seconds worth of timestamp data for both pitch and roll.</ul>
+                            <ul> 3. Using my function 'Send_RP_Data_Store', I sent my bulk data from my Nano to my laptop via the BLE setup from Lab 1.</ul>
+                            <div class="subheading mb-3"> Frequency Analysis </div>
+                            <ul> 1. Before creating my PSD, I first installed the matplotlib and scipy packages.</ul>
+                            <ul> 2. I then used my 'SEND_RP_DATA_STORE' to retreive 5 seconds of samples from my Nano for both Pitch and Roll and plotted the time domain signal for both pitch and roll:</ul>
+                            <div class ="d-flex flex-md-row">
+                                <img src ="assets/img/lab2/time_pitch_static.png" class = "img-fluid mb-3" style ="width : 50%" >  
+                                <img src ="assets/img/lab2/time_roll_static.png" class = "img-fluid mb-3"style ="width : 50%" >  
+                            </div>
+                            
+                            <ul> 3. I then introduced some noise in my data by shaking the IMU.</ul>
+                            <div class ="d-flex flex-md-row">
+                                <img src ="assets/img/lab2/time_pitch_motion.png" class = "img-fluid mb-3" style ="width : 50%" >  
+                                <img src ="assets/img/lab2/time_roll_motion.png" class = "img-fluid mb-3"style ="width : 50%" >  
+                            </div>
+                            <ul> 4. I then performed the FFT to get the following PSD for each measure:</ul>
+                            <div class ="d-flex flex-md-row">
+                                <img src ="assets/img/lab2/fft_pitch_static.png" class = "img-fluid mb-3" style ="width : 50%" >  
+                                <img src ="assets/img/lab2/fft_roll_static.png" class = "img-fluid mb-3"style ="width : 50%" >  
+                            </div>
+                            <div class ="d-flex flex-md-row">
+                                <img src ="assets/img/lab2/fft_pitch_motion.png" class = "img-fluid mb-3" style ="width : 50%" >  
+                                <img src ="assets/img/lab2/fft_roll_motion.png" class = "img-fluid mb-3"style ="width : 50%" >  
+                            </div>
+
+                            <p class="fw-bold"> Discuss how the choice of cut-off frequency affects the output.</p>
+                            
+                            <ul> From the results of the FFT, I selected 5 Hz as my cutoff frequency as frequencies above that value appeared to be correlated with high-frequency noise as evidenced in my plots above. </ul>
+                            <ul> My choice of 5 Hz as the cut-off frequency strikes a balance between attenuating unwanted high-frequency noise (such as vibrations or random fluctuations) while preserving the important low-frequency signal (like the gradual changes in pitch and roll)
+                                 that I am trying to track. This ensures that the signal remains clear and accurately represents the desired data without unnecessary distortions from high-frequency noise.</ul>
+
+                            <div class="subheading mb-3"> Implementing Low Pass Filter </div>
+                    
+                            <p> From Lecture 4, we are given the following recursive formula for a low pass filter: </p>
+
+                            <div style = "text-align: center;">
+                                <p> \(\theta_{\text{LPF}}[n] = \alpha \cdot \theta_{\text{RAW}} + (1 - \alpha) \cdot \theta_{\text{LPF}}[n-1]\) </p>
+
+                                <p> \(\theta_{\text{LPF}}[n-1] = \theta_{\text{LPF}}[n]\) </p>
+                            </div>                 
+                            
+                            <p> However, we need to calculate a value for alpha using our selected cutoff frequency of 5Hz.</p>
+
+                            <p> We can use the following equation for a RC low pass filter: </p>
+                            <div style = "text-align: center;">
+                                <p> \( f_c = \frac{1}{2\pi RC}\)</p>
+                            </div>
+                            <p> Where \( f_c \) is our cutoff frequency, to then solve for RC in the following equation: </p>
+                            <div style = "text-align: center;">
+                            <p> \(\alpha = \frac{T}{T + RC} \) </p>
+                            </div>
+                            <p> To which we can finally solve for \(\alpha\).</p>
+                            <p> Substituting a cutoff frequency of 5 Hz in for \( f_c \), we obtain a value of 0.318 seconds for the RC time constant.  </p>
+                            <p> When sending data over to my laptop, I calculated my sampling frequency to be about 400 samples/s or a sampling period of approx. 0.0025 seconds. </p>
+                            <p> Substituting these two values into our last equation, we obtain an \(\alpha\) of approximately 0.078.</p>
+
+                            <p> Below is a code snippet from my LPF implementation:</p>
+                            <script src="https://gist.github.com/evnleong/8c76b7b8625c2f00fc0af4220aaad986.js"></script>
+
+                            <p> And these are the results of the LPF on both Pitch and Roll data from the accelerometer overlaid over the raw data:</p>
+                            <div class ="d-flex flex-md-row">
+                                <img src ="assets/img/lab2/lpf_pitch.png" class = "img-fluid mb-3" style ="width : 50%" >  
+                                <img src ="assets/img/lab2/lpf_roll.png" class = "img-fluid mb-3"style ="width : 50%" >  
+                            </div>
+                            <p> As shown above, a lot of the high frequency noise was able to be attenuated. </p>
+    
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Gyroscope</h3>
+                            <div class="subheading mb-3">Pitch Roll Yaw</div>
+                            <p> Using the following equations to calculate Pitch, Roll and Yaw from angular velocity of the gyroscope:</p>
+
+                            <div style = "text-align: center;">
+                                <p> \(\theta_g = \theta_g + \text{gyro reading} \cdot dt\) </p>
+                                <p> \(\phi_g = \phi_g + \text{gyro reading} \cdot dt\) </p>
+                                <p> \(\psi_g = \psi_g + \text{gyro reading} \cdot dt\) </p>
+                            </div>
+                            
+                            <p> I added the following code to my Nano sketch: </p>
+
+                            <p>I chose to plot the output of the gyroscope as I rotated it between 0, 90, and -90 deg. angles and overlay it with both the raw and filtered pitch and roll values from the accelerometer. 
+                            (Since gravity does not have a component along the yaw axis, I could not directly compare the gyroscope's yaw data with the accelerometer's
+                             measurements, as the accelerometer only detects linear acceleration and cannot measure rotational motion around the yaw axis.)
+                            </p>
+                            <div class = "d-flex flex-md-row">
+                                <img src="assets/img/lab2/pitch_gyro_accel.png" style = "width:50%" class = "img-fluid mb-3">
+                                <img src="assets/img/lab2/roll_gyro_accel.png" style = "width:50%" class = "img-fluid mb-3">
+                            </div>
+                        
+                            <p> Although the time period of data collection was brief, as can be seen in the plot above, I noticed that compared to the accelerometer, 
+                                the gyroscope tends to slightly drift over time after rotations, even when reverting back to its original angle. This drifting appears to be okay during the short window shown above, but over long time periods this drift accumulates.
+                                Additionally, compared to the raw accelerometer data, the raw gyroscope data had far less noise, seemingly less than even my filtered accelerometer data. 
+                            </p>
+                            <br>
+                        
+                            <br>
+
+                            <div class="subheading mb-3">Complementary Filter</div>
+                           
+                            <p> Using the following equation from Lecture 4: </p>
+                            <div style = "text-align: center;">
+                                <p> \(\theta = (\theta + \theta_g) (1 - \alpha) + \theta_a \alpha \)</p>
+                            </div>
+                            
+                            <p> I applied a complementary filter to my IMU data to compute pitch and roll more accurately with higher stability with the following code: </p>
+
+                            <script src="https://gist.github.com/evnleong/6b0d77e912554c613b6ac38b38dfb89d.js"></script>
+                           
+                            <p> I selected the value for comp_alpha to be 0.3 as I trusted the accelerometer's data more than the gyroscope, but still wanted to strike a balance between the high sensitivity and noise of the accelerometer and the drifting of the gyroscope.</p>
+                            
+
+                            <p class = "fw-bold">  Demonstrate its working range and accuracy, and that it is not susceptible to drift or quick vibrations.</p>
+                            <p> To demonstrate the effectiveness of the complementary filter, I placed the IMU on a table at rest, and shook it at two intervals during the sampling period.
+                                I then plotted a graph for each measurement.</p>
+                            <p> As shown below, the complementary filter tries to strike a balance between the sensitive accelerometer and the drifiting gyroscope. I did notice that the complementary filter output does still drift slightly due to the contributions from the gyroscope, but at the same time it has reduced a lot of the high frequency noise from the shaking table,
+                                 while still remaining responsive to subtle changes in pitch and roll that would have been missed by just the gyroscope alone.</p>
+                            <div class = "d-flex flex-md-row">
+                                <img src="assets/img/lab2/comp_filter_pitch.png" style = "width:50%" class = "img-fluid mb-3">
+                                <img src="assets/img/lab2/comp_filter_roll.png" style = "width:50%" class = "img-fluid mb-3">
+                            </div>
+                            <br>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Sample Data</h3>
+                            <div class="subheading mb-3"> Sampling Data Discussion </div>
+                            <p class = "fw-bold"> How quickly are you able to sample new values?</p>
+                            <p> Removing any extraneous print statements and delays, I was able to sample 2048 samples in approximately 4996 milliseconds. The equivalent sample rate was approximately 400 samples per second.  </p>
+                            <p class = "fw-bold"> Does your main loop on the Artemis run faster than the IMU produces new values?</p>
+                            <p> My main loop on the Artemis does run faster than the IMU produces new values. In my implementation, the IMU cannot retrieve a sample unless the call to myICM.dataReady() returns true, whereas the main loop can continue to execute regardless of the return value of the function. </p>
+
+                            <p class = "fw-bold"> Consider if it makes sense to have one big array, or separate arrays for storing accelerometer and gyroscope data, argue for your choice. </p>
+                            <p> In my implementation, I chose to use multiple, separate arrays in order to store my gyroscope and accelerometer data. I felt that this made the most logical sense to me, 
+                                and allowed me to easily differentiate between the different data sources when transmitting my data over BLE. </p>
+                            
+                            <p class = "fw-bold"> Consider the best data type to store your data. Should you use string, floats, double, integers? Justify your decision. </p>
+                            <p>The primary data type I chose to store all of my data as was float. This is because the accelerometer and gyroscope sensor data required precision with decimal values and floats provide the necessary precision while being memory efficient (compared to double).
+                                However, if I were to optimize further, I might consider switching from float to uint32_t for storing time values (such as those obtained from millis()), as millis() returns an integer value. Using uint32_t would likely be more appropriate for storing time because it's a positive integer value and avoids the unnecessary overhead of floating-point representation.
+                                That said, I decided to stick with floats throughout for consistency across all data types. Additionally, since the memory space for storing uint32_t and float is identical, I didn't consider the trade-off significant enough to change the data type. </p>
+                            <p class = "fw-bold">  Consider the memory of the Artemis; how much memory can you allocate to your arrays? What does that correspond to in seconds?</p>
+                            <p> Assuming that the Artemis has the full 384 kB of RAM available to allocate to the arrays, and assuming that each sample stores  4 float data points (Roll, Pitch, Yaw, and Timestamp), this would result in:</p>
+
+                            <p>
+                                \[
+                                \text{Data per sample} = 4 \times 4 \, \text{bytes} = 16 \, \text{bytes}
+                                \]
+                            </p>
+
+                            <p>
+                                With a total available RAM of 384 kB, we can calculate the maximum number of samples that can be stored:
+                            </p>
+
+                            <p>
+                                \[
+                                \text{Max samples} = \frac{384 \, \text{KB}}{16 \, \text{bytes/sample}} = \frac{384,000 \, \text{bytes}}{16 \, \text{bytes/sample}} = 24,000 \, \text{samples}
+                                \]
+                            </p>
+
+                            <p>
+                                So, at most 24,000 samples can be stored in total.
+                            </p>
+
+                            <p>
+                                Assuming 400 samples can be collected per second, the time it would take to use up the available memory is:
+                            </p>
+
+                            <p>
+                                \[
+                                \text{Time before running out of memory} = \frac{24,000 \, \text{samples}}{400 \, \text{samples/sec}} = 60 \, \text{seconds}
+                                \]
+                            </p>
+
+                            <p>
+                                So, under these assumptions, you would be able to sample for approximately 1 minute before the available memory is exhausted.
+                            </p>
+
+                            <div class="subheading mb-3"> Store & Send 5 seconds of sample data </div>
+                            
+                            <p class = "fw-bold">5 seconds of time stamped data from IMU: </p>
+
+                            
+                            <div class = "d-flex flex-md-row">
+                                <img src="assets/img/lab2/first_5.png" style = "width:50%" class = "img-fluid mb-3">
+                                <img src="assets/img/lab2/last_5.png" style = "width:50%" class = "img-fluid mb-3">
+                            </div>
+
+                            <p> Shown above are the first and last 5 IMU sensor readings I collected from a total of 2048 readings from the Nano.
+                                 From first timestamp to last timestamp, the collected data spans 5199 milliseconds (5.2 seconds) </p>
+
+                            <p class = "fw-bold">5 seconds worth of sample data collected from IMU.</p>
+                            <p> For my >5 seconds of IMU sample data, I decided to chart the raw accelerometer, raw gyroscope, and complimentary filter pitch readings over the span of those 5.2 seconds. </p>
+                            <div class = "d-flex flex-md-row">
+                                <img src="assets/img/lab2/5s.png" class = "img-fluid mb-3">
+                            </div>
+                           
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+                    
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Record A Stunt</h3>
+
+                            <iframe src="https://drive.google.com/file/d/1yRxE9Nt33gGqggi2tr9niX9lRB5YDhM1/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
+
+                            <p class = "fw-bold">
+                               Show what you have tried, and discuss what you observe.
+                            </p>
+
+                            <p> In the stunt video I attempted a vertical flip and some targeted driving. </p>
+                            <p> I observed that the car accelerates extremely quickly and is able to spin about its central axis very easily. </p>
+        
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>
+            
+
+                    
                 </div>
             </section>
             <hr class="m-0" />
@@ -458,6 +735,5 @@
         <script src="js/scripts.js"></script>
     </body>
 </html>
-
 
 

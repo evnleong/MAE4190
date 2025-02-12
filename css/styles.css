@@ -10972,6 +10972,46 @@ section.resume-section .resume-section-content {
 }
 
 /* Github Gist Style Customization */
-.gist {width:500px !important;}
+.gist {width:100% !important;}
 .gist-file
-.gist-data {max-height: 300px;max-width: 500px;}
+.gist-data {max-height: 300px;max-width: 100%;}
+
+
+
+.zoom-effect {
+  cursor: zoom-in;
+}
+
+.outer {
+  overflow: hidden;
+}
+
+.inner {
+  width: 100%;
+  height: 99%;
+  overflow-y: auto; 
+  scrollbar-width: thin; 
+  scrollbar-color: transparent transparent; 
+  transition: scrollbar-color 0.3s ease-in-out;
+}
+
+.inner.scrolling {
+  scrollbar-color: #888 #f1f1f1; 
+}
+
+.inner::-webkit-scrollbar {
+  width: 8px;
+}
+
+.inner::-webkit-scrollbar-thumb {
+  background: transparent; 
+  transition: background 0.3s ease-in-out;
+}
+
+.inner.scrolling::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.inner::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}

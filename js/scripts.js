@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 
 
-
+// Typewriter effect
 document.addEventListener("DOMContentLoaded", function () {
     const text = "4190: Fast Robots";
     const speed = 100; // Typing speed 
@@ -72,4 +72,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     startTypewriter(); // Start typewriter
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let timer;
+    let el = document.querySelector(".inner");
+
+    el.addEventListener("scroll", function () {
+        el.classList.add("scrolling");
+
+        // Clear prev timer
+        clearTimeout(timer);
+
+        // Set new timer
+        timer = setTimeout(function () {
+            el.classList.remove("scrolling");
+        }, 600); 
+    });
 });
