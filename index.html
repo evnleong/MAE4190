@@ -470,7 +470,9 @@
                                 <p> \(\psi_g = \psi_g + \text{gyro reading} \cdot dt\) </p>
                             </div>
                             
-                            <p> I added the following code to my Nano sketch: </p>
+                            <p> I added code to my Nano sketch to compute and store the output of these formulas (a relevant code snippet is shown below): </p>
+
+                            <script src="https://gist.github.com/evnleong/9c863d474d95458d3a3646455a5fa8ea.js"></script>
 
                             <p>I chose to plot the output of the gyroscope as I rotated it between 0, 90, and -90 deg. angles and overlay it with both the raw and filtered pitch and roll values from the accelerometer. 
                             (Since gravity does not have a component along the yaw axis, I could not directly compare the gyroscope's yaw data with the accelerometer's
@@ -486,7 +488,14 @@
                                 Additionally, compared to the raw accelerometer data, the raw gyroscope data had far less noise, seemingly less than even my filtered accelerometer data. 
                             </p>
                             <br>
+
+                            <p> Lastly to test my yaw formula, I attempted to oscillate the IMU in the yaw axis between -90 deg , back to 0 deg , and 90 deg within the 5 second sampling window: </p>
+
+                            <div style = "text-align: center;">
+                                <img src="assets/img/lab2/yaw.png" style = "width:50%" class = "img-fluid mb-3">
+                            </div>
                         
+
                             <br>
 
                             <div class="subheading mb-3">Complementary Filter</div>
