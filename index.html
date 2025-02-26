@@ -37,12 +37,12 @@
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1a">Lab 1: Part A</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1b">Lab 1: Part B</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab2">Lab 2: IMU </a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Lab 3: ToF </a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab3">Lab 3: ToF </a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#awards">Lab 4: Motor Drivers and Open Loop Control</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab5">Lab 5: Linear PID and Interpolation</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab6">Lab 6: Orientation PID</a></li>
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab7">Lab 7: Kalman Filtering</a></li>
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab8">Lab 8: Stunts!</a></li>
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab8">Lab 8: Stunts!</a>
                     </ul>
                 </div>
             </div>
@@ -494,10 +494,7 @@
                             <div style = "text-align: center;">
                                 <img src="assets/img/lab2/yaw.png" style = "width:50%" class = "img-fluid mb-3">
                             </div>
-                        
-
                             <br>
-
                             <div class="subheading mb-3">Complementary Filter</div>
                            
                             <p> Using the following equation from Lecture 4: </p>
@@ -617,19 +614,224 @@
         
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary"></span></div>
-                    </div>
-            
-
-                    
+                    </div>     
                 </div>
             </section>
             <hr class="m-0" />
             <!-- Interests-->
-            <section class="resume-section" id="interests">
+            <section class="resume-section" id="lab3">
                 <div class="resume-section-content">
-                    <h2 class="mb-5">Interests</h2>
-                    <p>Apart from being a web developer, I enjoy most of my time being outdoors. In the winter, I am an avid skier and novice ice climber. During the warmer months here in Colorado, I enjoy mountain biking, free climbing, and kayaking.</p>
-                    <p class="mb-0">When forced indoors, I follow a number of sci-fi and fantasy genre movies and television shows, I am an aspiring chef, and I spend a large amount of my free time exploring the latest technology advancements in the front-end web development world.</p>
+                    <h2 class="mb-5">Lab 3: ToF</h2>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Prelab</h3>
+
+                            <p class = "fw-bold">Note the I2C sensor address.</p>
+                            <p> Following the Polulu ToF sensor datasheet, the default I2C address of the ToF sensors should be 0x52. </p>
+                            <p class = "fw-bold"> Briefly discuss the approach to using 2 ToF sensors.</p>
+                            <p> The approach to using 2 ToF sensors is to enhance the robot's overall depth perception and ability to measure the distance from my car to any obstacles by fusing data from multiple ToF sensors. </p>
+                            <p class = "fw-bold"> Briefly discuss placement of sensors on robot and scenarios where you will miss obstacles.</p>
+                            <p> In my approach, I plan on putting 1 ToF sensor at the front of the car and 1 ToF sensor at the rear. My reasoning for this is that placing both on the front will likely lead to an overlap in the FOVs of the sensors, and because I am limited in the number of ToF sensors I have,
+                                I want to maximize the coverage that my ToF sensors provide. Thus, by placing a sensor at the rear I can observe obstacles in the rear of my vehicle without requiring an entire 360 degree rotation. A potential option could have been to place a ToF sensor on the side of the vehicle to detect the obstacles that I would miss on either side of the robot, but as I am constrained by only having 2 ToF, 
+                                I would have to make a sacrifice in that I would only be able to detect obstacles on 1 side of the robot at a time without rotating, which I reason would be just as useful if 
+                                I were to just rotate my robot 90 deg and use either the rear or forward ToF sensors to detect the obstacle. Thus with this setup I will miss detection in scenarios where obstacles or walls appear to the sides of my robot, and that are outside the FOVs of the front and rear ToF sensors.</p>
+                            <p class = "fw-bold"> Sketch of wiring diagram (with brief explanation if you want) </p>
+                            <img src= "assets/img/lab3/tofschematic.png" class = "img-fluid mb-3"> 
+
+                            <p>Above is a sketch of my initial wiring of the 2 ToF sensors to the Nano using the Qwiic multiport connector. I will be using the 2 longest Qwiic cables for the ToF as they will need to be placed on opposite ends of the robot.</p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>     
+
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 1</h3>
+                            <div class="subheading mb-3">Powering Up Nano Off Battery</div>
+
+                            <div style = "text-align: center;">
+                                <iframe src="https://drive.google.com/file/d/1kbTRgsJACsL1_UE7l8BIY3lxAa1z7klO/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
+                                <p> <i> Video of Nano powering up off battery (running Lab 2 sketch).</i>   </p>
+                            </div>                       
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>     
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 2</h3>
+
+                            <div class="subheading mb-3">ToF sensor connection</div>
+
+                            <p class = "fw-bold"> Picture of your ToF sensor connected to your QWIIC breakout board.</p>
+
+                            <div style = "text-align: center;">
+                                <img src = "assets/img/lab3/tofconnection.jpg" width = 240 height = 240 class = "img-fluid mb-3"> 
+                                
+                            </div>
+
+                            <p class = "fw-bold"> Screenshot of Artemis scanning for I2C device (and discussion on I2C address). Does the address match what you expected? If not, explain why. </p> 
+                            <div style = "text-align: center;">
+                                <img src= "assets/img/lab3/tofaddress.png" class = "img-fluid mb-3">
+                            </div>
+
+                            <p> The address returned by the I2C scanner code did not match my expectations. Following the Polulu datasheet, we would expect the scanner to detect the ToF sensor at its stated default address of 0x52, but instead it returns 0x29.
+                                 After some research, it appears this is because the 0x52 value stated on the datasheet is the full I2C address range, where the first 7 bits of the range (1010010) is the actual slave address, and the last bit in the range signifies data direction (read or write). 
+                                 Just taking the 7 bit address of 0101001 and ignoring the read/write bit, we get the I2C address returned by the scanner code which is 0x29.</p>
+                            <div class="subheading mb-3">ToF Setup</div>
+
+                            <p class = "fw-bold"> The ToF sensor has three modes, that optimize the ranging performance given the maximum expected range. 
+                                Discuss the pros/cons of each mode, and think about which one could work on the final robot. <pre> .setDistanceModeShort(); //1.3m .setDistanceModeMedium(); //3m .setDistanceModeLong(); //4m, Default </pre></p>
+                            
+                            <img src = "assets/img/lab3/distancemodes.png" class= "img-fluid mb-3"> 
+                            <p> According to the datasheet (a relevant snippet shown above), setDistanceModeShort() appears to be the most resilient to ambient light, but its drawback is that it is the most limited in sensing range to approximately 1.35m. </p>
+                            
+                            <p> setDistanceModeLong() appears to be easily impacted by ambient light, but has the greatest sensing range of 4 meters.</p>
+
+                            <p> setDistanceModeMedium() seems to be a good balance between both the short and long distance modes, but this also means it is not the best of the options in either metric. Also, looking at the datasheet, it appears that it's maximum sensing range is also greatly impacted by ambient light.</p>
+
+                            <p> After deliberating on which sensor mode to pick, I settled on using the short distance mode. I expect ambient light interference to be a prevalent issue that will likely be out of my control throughout the labs, and by choosing the short distance mode, I provide the greatest resilience to this interference that is within my control.
+                                Furthermore, after reviewing the datasheet, the max ranging distance of the medium and long distance modes appear to be so significantly hindered by ambient light that the short distance mode actually has a higher maximum ranging distance in strong ambient light conditions. I believe a consistent 1.35m of ranging distance to be more than enough for detection of obstacles to the front and rear of my robot in a small room situation and more ideal than highly variable, albeit further sensing distances, provided by the other modes. </p>
+                           
+                            <div class="subheading mb-3">Test Chosen ToF distance Mode</div>
+
+                            <p> At this point in the lab, I installed the SparkFun VL53L1X 4m laser distance sensor library.</p>
+
+                            <p> I then ran the demo code, and tested the sensor on my lab box placed approximately 90 mm away. </p>
+                            
+                            <div style = "text-align:center;">
+                                <img src="assets/img/lab3/tofexample.png" class ="img-fluid mb-3"> 
+                            </div>
+                            
+                            
+                            <div class="subheading mb-3">ToF in Parallel</div>
+                            <p class = "fw-bold"> Using notes from the pre-lab, hook up both ToF sensors simultaneously and demonstrate that both work.</p>
+                            
+                            <p> At this point in the lab, I soldered a connection between the XSHUT pin on one ToF sensor and the A2 pin on the Nano. Since both ToF sensors have the same default I2C address, adding this jumper allows me to disable one of the ToF sensors using the XSHUT pin to allow
+                                me to address the active sensor and reassign it to a unique I2C address (in this case 0x4A). I can then reboot the powered off ToF sensor, and now properly address both sensors in parallel. </p>
+
+
+                            <p> Below is my updated schematic: </p>
+
+                            <img src = "assets/img/lab3/tofschematicupdate.png" class = "img-fluid mb-3"> 
+
+                            <p> And a snapshot of my new wiring: </p>
+                            
+                            <div style = "text-align: center;">
+                                <img src = "assets/img/lab3/tofconnectionupdate.jpg" width = 300 height = 300 class = "img-fluid mb-3"> 
+                            </div>
+                            
+                            <p class = "fw-bold">
+                                2 ToF sensors and the IMU: Discussion and screenshot/video of sensors working in parallel
+                            </p>
+
+                            <p> Using the following code implementing the shut off routine outlined earlier, I was able to get the two ToF sensors to print out measurement data in parallel whenever data was ready on both sensors:</p>
+                            <script src="https://gist.github.com/evnleong/62128dc1bd3a330f3439c061e25740eb.js"></script>
+                            <img src = "assets/img/lab3/tofparallel.png" class = "img-fluid mb-3"> 
+
+                            <div class="subheading mb-3">Documenting ToF Accuracy</div>
+                            <p> To test the accuracy of the sensors, I attached the 2 ToF sensors to a cardboard box directly across from my lab box, and moved the sensors back in increasing intervals of 50mm along a ruler,
+                                plotting the actual distance to the target vs a sample from each sensor's reported distance. An image of my setup is shown below (In later iterations I switched to using a measuring tape as my iPad wasn't long enough and I was worried about possible ambient light interference).
+                           </p>
+
+                           <div style = "text-align:center;">
+
+                            <img src = "assets/img/lab3/tofsetup.jpg" height = 300 width = 300 class = "img-fluid mb-3">
+
+                           </div>
+
+                           <p> To maximize the accuracy and precision of my sensor, I tried to reduce ambient light in the room as much as possible by turning off most lights (more ambient light would decrease ranging distance), and also chose my white lab box (as opposed to a darker surface) as it would hopefully reflect more of the IR light emitted by the ToF back to the sensor.</p>
+
+                           <img src = "assets/img/lab3/tofaccuracy.png" class = "img-fluid mb-3">
+
+                           <p> In this test, I noticed that at distance 0, even though my ToF sensors were directly touching the target box, one of my ToF sensors still detected the target at a nonzero distance (after multiple trials, this error was usually 10+ mm). 
+                               This same sensor also consistently underreported distances to the target by approximately 15-30 mm at each measurement point which I thought was odd. 
+                               Further, I noticed that for the first 150 mm or so, the ToF sensor data for both sensors was much further off from the expected distance to the target, which is a little higher than the datasheet's stated minimum ranging distance of around 4 cm.  
+                           </p>
+
+                           <div class="subheading mb-3">Documenting Repeatability</div>
+                           <p> To test the repeatability of the sensors, I conducted the same test but instead of taking just 1 sample at each point, I took 10 samples at each measurement point, and calculated the std. deviation between the samples taken at each point. Below is the plot of those std deviations.</p>
+                           
+                           <img src= "assets/img/lab3/tofrepeatability.png" class = "img-fluid mb-3">
+                           
+                           <p> The std. deviation appears to fluctate randomly (except on sensor 2 when pushed against the box (it consistently read 0)) across all data points, but overall the std. deviation amongst datapoints for a measurement tended to be around 1-2 mm.</p>
+
+                           <div class="subheading mb-3">Documenting Varied ToF Ranging Times</div>
+                            <p> I also tested modifying the timing budget parameter for one of my sensors using the setTimingBudgetInMs() function.  </p>
+                            <p> According to the datasheet, "increasing the timing budget increases the maximum distance the device can range and
+                                improves the repeatability error. However, average power consumption augments accordingly." Thus, I changed my testing
+                                setup to measure a max range of 1500 to test how varying timing budgets would affect the maximum ranging distance and repeatability of my sensor. 
+                            </p>
+
+                            <img src = "assets/img/lab3/tofbudgetaccuracy.png" class ="img-fluid mb-3">
+
+                            <p> Interesting to note from this test was that with the timing budget set to 20 ms, even after multiple attempts, the ToF failed to detect the obstacle from ranges 1200 mm and beyond with dramatic fluctations in measurements.
+                                With timing budgets of 50mm and 100mm however, the ToF sensor appeared to be able to detect the lab box at these far distances but was still relatively inaccurate, which aligns with my expectations from the datasheet that the ToF sensors have a max range (in short distance mode) of around 1.35-1.4m. </p>
+                            
+                            <p> Then following the similar setup as before, I again took 10 measurements at each point with each timing budget and I plotted the std deviation of the obtained datapoints at each measured distance.</p>
+                            <img src = "assets/img/lab3/tofbudgetrepeatability.png" class ="img-fluid mb-3">
+
+                            <p> As shown above, I noticed that generally as the ranging distance increased, standard deviation increased as well, but that by increasing the timing budget, there was a fair decrease in repeatability error, which aligns with the statement 
+                            from the datasheet that higher timing budgets decrease repeatability error.</p>
+                            
+                            <p> One thing to note was that with a timing budget of 20ms, a huge spike in the std. deviation was observed at the 1500 mm mark. As mentioned earlier,even after repeated trials it did not seem like I could get the ToF sensor to detect the lab box with a timing budget of 20ms, 
+                                and readings at this distance could likely be attributed to slight movement in the angle of sensors shifting in their tape over time causing them to detect other objects or some other form of noise in the system.</p>
+                           
+                            <p> Lastly, I was also able to send timestamped ToF data from my sensors in parallel to my laptop over BLE and plotted the readings below.</p>
+                            <img src = "assets/img/lab3/toftimestampchart.png" class = "img-fluid mb-3"> 
+                    
+                            <p class ="fw-bold">  Write a piece of code that prints the Artemis clock to the Serial as fast as possible, continuously, and prints new ToF sensor data from both sensors only when available.
+                                The distanceSensor.checkForDataReady() routine can be called to check when new data is available.
+                                How fast does your loop execute, and what is the current limiting factor?</p>
+
+                                <p>Using the following code, I printed the Artemis clock to the Serial port as fast as possible, only displaying readings from the ToF sensors when new data was available.</p>
+                                <script src="https://gist.github.com/evnleong/c7fb19ad2fbdcc402ef657279af0ab52.js"></script>
+                                <p> Using the timestamp values generated by the millis() function call (a snippet is shown below), the average time between millis() readings was approximately 13 ms, which gives us an execution rate of the outer loop somewhere around 77 Hz. </p>
+                                <div style = "text-align: center;">
+                                    <img src ="assets/img/lab3/clocktest.png" class = "img-fluid mb-3" >  
+                                </div>
+                                <p> The average time between actual ToF measurements for each individual sensor was around 150 millis, or approximately 6 Hz. </p>
+                                <p> Thus, it appears the current limiting factor are the calls to the checkForDataReady() functions. </p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>     
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 3 </h3>
+                            <div class="subheading mb-3">ToF Data Collection</div>
+
+                            <p>Lastly, I reconnected the IMU and updated my IMU retrieval function from Lab 2 to include ToF data as well. (A relevant code snippet shown below) </p>
+                            
+                            <script src="https://gist.github.com/evnleong/28b170b2a562804113731f37f0a06158.js"></script>
+            
+                            <p>I then sent timestamped data of roll, pitch, yaw, and distance from both ToF sensors all at once to my laptop.  </p>
+
+                            <p class = "fw-bold"> Include a plot of the ToF data against time. (Time vs Distance) </p>
+                            
+                            <img src="assets/img/lab3/tofwimu.png" class = "img-fluid mb-3"> 
+                        
+                            <p class = "fw-bold"> Include a plot of the IMU data against time. (Time vs Angle) </p>
+
+                            <img src="assets/img/lab3/imuwtof.png" class = "img-fluid mb-3"> 
+
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>   
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Collaboration Statement </h3>
+                            
+
+                            <p>I referenced Nila Narayan's Github page for advice on documenting sensor accuracy, repeatability, and varied ranging times! <a href = "https://nila-n.github.io/Lab3.html"> https://nila-n.github.io/Lab3.html </a> </p>
+                        
+
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary"></span></div>
+                    </div>   
+                    
                 </div>
             </section>
             <hr class="m-0" />
