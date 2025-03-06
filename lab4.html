@@ -1,0 +1,278 @@
+<!-- lab1a.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Lab 1A: Arduino IDE - Evan Leong</title>
+    <link href="css/styles.css" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="assets/img/profile_photo.jpg" />
+      <!-- Font Awesome icons (free version)-->
+      <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+      <!-- Google fonts-->
+      <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+      <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+      <!-- Core theme CSS (includes Bootstrap)-->
+      <link href="css/styles.css" rel="stylesheet" />
+      <!-- Mathjax CDN -->
+      <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      <!-- Jquery -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <!-- Image Lightboxes-->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+  
+    <!-- Add any other necessary links/scripts here -->
+</head>
+<body id="page-top">
+    <!-- Navigation Bar -->
+       <!-- Navigation-->
+       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+            <span class="d-block d-lg-none">Evan Leong</span>
+            <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/profile_photo.jpg" alt="..." /></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse outer " id="navbarResponsive" style = "max-height: 50vh" >
+            <div class = "inner">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1a.html">Lab 1: Part A</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1b.html">Lab 1: Part B</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab2.html">Lab 2: IMU </a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab3.html">Lab 3: ToF </a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab4.html">Lab 4: Motor Drivers and Open Loop Control</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab5.html">Lab 5: Linear PID and Interpolation</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab6.html">Lab 6: Orientation PID</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab7.html">Lab 7: Kalman Filtering</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab8.html">Lab 8: Stunts!</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Lab 4 Section -->
+    <section class="resume-section" id="lab4">
+        <div class="resume-section-content">
+            <h2 class="mb-5">Lab 4: Motor Drivers and Open Loop Control </h2>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                <div class="flex-grow-1">
+                    <h3 class="mb-0">Prelab</h3>
+                    <div class="subheading mb-3">Wiring Diagram and Reasoning</div>
+
+                    <p>
+                        Before coming to lab, I prepared a wiring diagram for how I planned to connect my motor drivers, Nano, and batteries together. To do this, I used information that I could find about the pin functions of the motor drivers from the provided datasheet.
+                    </p>
+
+                    <p>Below is a labled copy of that wiring diagram:</p>
+
+                    <p class = "fw-bold"> Diagram with your intended connections between the motor drivers, Artemis, and battery (with specific pin numbers)</p>
+
+                    <div style = "text-align: center;">
+                        <a href="assets/img/lab4/motor_driver_wiring.png" data-lightbox="gallery">
+                            <img src="assets/img/lab4/motor_driver_wiring.png" height = 600 width = 600 class ="zoom-effect img-fluid mb-3">
+                        </a>
+                    </div>
+                    
+                    <p class = "fw-bold"> What pins will you use for control on the Artemis? (It is worth considering both pin functionality and physical placement on the board/car).</p>
+                
+                    <p> I chose to use pins 0,1,4, and 5 for motor control on the Artemis. In making this decision, I considered the location of the pins (all were located on the same side of the board as my already soldered XSHUT pin for the ToF sensor which helped with tidiness and reach of the wires)
+                         as well as functionality -- (GPIO pins 0,1,4, and 5 on the Artemis are all PWM capable pins.) Further, I could also use the corresponding GND pins located under these 4 pins to further consolidate/organize my wires.</p> 
+                    <p>
+                        Along with this wiring diagram, I also came to lab with a general idea of how I wanted to route my wires and place components within the car's chassis. 
+                        Through much experimentation, I found it more effective to trial and error component placement along the car's chassis, temporarily taping components down to test fit and adjust wire routing as needed. This approach proved easier than pre-planning all cable routes and component placements, as the chassis space was more constrained than I initially anticipated.
+                    </p>
+
+                    <p>
+                        When wiring, I followed as many best practices as possible, routing my signal wires as far as possible from the motors and their magnets, which could cause interference. I reserved black and red wires for power, coordinated the color coding of signal wires to make tracing and debugging easier, and tried to keep the wires as short as possible to mitigate noise, while also ensuring they were long enough to reduce strain and prevent breakage.
+                        Additionally, I used stranded wire wherever possible, especially in areas that would undergo frequent bending, to mitigate the possibility of breakage.
+                    </p>
+                
+                    <div class="subheading mb-3">Battery Discussion</div>
+
+                    <p class= "fw-bold"> We ask you to power the Artemis and the motor drivers/motors from separate batteries. Why is that?</p>
+                    <p> We power the Artemis and the motor drivers with separate batteries, as the motors and motor drivers often demand significantly more current than the Artemis, especially during startup or when under load. 
+                        By powering the two separately, we can ensure the Artemis gets a stable, clean voltage without fluctations or noise caused by the motor's high current draw. </p>
+
+                    <p> Additionally, powering the two separately has an added benefit of extending the battery life/runtime of the robot as the Artemis is not drawing from the same supply as the motors.</p>
+                    
+                    
+                </div>
+                <div class="flex-shrink-0"><span class="text-primary"></span></div>
+            </div>
+
+
+            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                <div class="flex-grow-1">
+                    <h3 class="mb-0">Lab Tasks</h3>
+                    <div class="subheading mb-3">Task 1: Picture of your setup with power supply and oscilloscope hookup</div>
+                    <p> Proceeding with the lab, I started by first soldering jumpers to and connecting one of the DRV8833 motor drivers to my board. 
+                        I then connected the motor driver outputs to the oscilloscope, and the power inputs to the + and - terminals of the power supply. </p>
+
+                    <p> A labeled picture of my oscilloscope setup is shown below:</p>
+                    <div style = "text-align: center;">
+                        <img src = "assets/img/lab4/oscope_setup.jpg" width = 400 height = 400 class = "img-fluid mb-3"> 
+                    </div>
+                    
+                    <div class="subheading mb-3">Task 2: Power supply setting discussion </div>
+                    <p>Although the motor drivers are capable of being supplied with up to 10.8V (according to the TI datasheet), I set the power supply settings to a controlled voltage of 3.7V to match the 3.7V Lipo battery that the motor drivers would be supplied with in future tests for consistency.  </p>
+                        
+                    <div class="subheading mb-3">Task 3: Motor Driver Test Code</div>
+                    <p class = "fw-bold"> Include the code snippet for your analogWrite code that tests the motor drivers. </p>
+
+                    <p> Below is a snippet of the code that I used to test the PWM signals generated by the motor driver: </p> 
+                    <script src="https://gist.github.com/evnleong/b164bb4356ef7a4148a193d34968be6c.js"></script>
+                    <p>I was inspired by Stephan Wagner's PWM test code to cycle through varying duty cycles and record the changing PWM output on the oscilloscope. </p>
+                    <div class="subheading mb-3">Task 4: Oscilloscope</div>
+                    <p class ="fw-bold"> Image of your oscilloscope </p>
+                    <p> Below is my oscilloscope output when running the test code and using the setup shown above:</p>
+                    <iframe src="https://drive.google.com/file/d/1W6rP39Atk4H3avszI1FRBZE-pRY971rg/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+        
+                    <div class="subheading mb-3">Task 5: Right Side Wheel Test</div>
+                    <p> Once I had verified that the PWM signals matched my expectations, I wired the motor driver outputs to the motor terminals.</p>
+                        
+                    <p> I then propped the car up on one side and ran the following code to continually alternate between driving the right set of wheels forward for 5 seconds, stopping the motor, and driving in reverse for 5 seconds. </p>
+                    <p> This code allowed me to test that I could successfully drive the motor in both directions, and stop the car as well. </p>
+                    <script src="https://gist.github.com/evnleong/096e7f540738fb063bcd140581fd6540.js"></script>
+
+                    <p class = "fw-bold"> Short video of wheels spinning as expected (including code snippet it's running on)</p>
+
+                    <iframe src="https://drive.google.com/file/d/1mHhJv54OnVt5OPQuNkD2aFoW-PZRSQds/preview" width="640" height="480" allow="autoplay"></iframe>
+
+                    <p> The wheels move fast in the video, but if you slow the video speed down, you can see that the car switches between driving forwards and in reverse as expected! </p>
+
+                    <div class="subheading mb-3">Task 6: Dual Motor Test</div>
+                    <p> 
+                        After verifying that one set of wheels could be successfully driven, I soldered the remaining motor driver to the left motor and ran the following code 
+                        to verify that I could now drive both motors simultaneously (forwards, reverse, and stopped).
+                    </p>
+
+                    <script src="https://gist.github.com/evnleong/9105e345255e2b4b271e3792fcb6dc2e.js"></script>
+
+                    <p> To conduct this test, I elevated the robot onto two wooden blocks from the lab, so that the robot would not run away.
+                        I also ran this test using the 850 mAh battery to power the motors, and the 750 mAh battery to power the Nano to fully test powering the car off of battery power as well. </p>
+
+
+                    <p class= "fw-bold"> Short video of both wheels spinning (with battery driving the motor drivers) </p> 
+
+                    <iframe src="https://drive.google.com/file/d/1r7cU_-k3GCqUjg-TlTkeCDqFEdbvuMmX/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+
+                    <div class="subheading mb-3">Task 7: Component Diagram </div>
+
+
+                    <p> As I began to approach the end of the lab, I started to finalize the placement of all components within the car's chassis.
+                    </p>
+
+                    <p>
+                        This step took quite a bit of time as I had noticed during testing that there were some flaws in my initial wiring plans. </p>
+                    <p> 
+                        For example, when I first soldered and placed my motor drivers in my car's chassis, I decided to route all wires coming from the Artemis to the drivers through the passthrough hole that was present in the bottom of the battery compartment (a picture is shown below). 
+                    </p>
+
+                    <div style = "text-align: center;"> 
+                        <img src = "assets/img/lab4/initial_wiring.jpg" height = "300" width = "300" class = "img-fluid mb-3">  
+                    </div>
+
+                    <p> Initially this seemed like a great idea for cable tidiness, but as I realized in practice, due to the limited length of these wires ( I had trimmed them to be as short as possible to reduce possible noise), it lead to the motor drivers being pulled into the motors, making the bottom casing extremely difficult to close, and placed excess strain on the other wire connections to the motor drivers.</p>
+                        
+                    <p> 
+                        Additionally, this wiring setup also had the Artemis wired face-down (another picture shown below). At first I did not think this would be a major issue, but after trying to disconnect and reconnect the USB-C cable to the Nano multiple times, I decided to flip the board so that the USB-C port was more easily accessible. It also allowed for much more ergonomic access to the reset button and JST connector.  
+                    </p>
+
+                    <div style = "text-align: center;"> 
+                        <img src = "assets/img/lab4/initial_wiring_top.jpg" height = "300" width = "300" class = "img-fluid mb-3">  
+                    </div>
+
+
+                    <p> After all of this trial and error, resoldering, and cable management, I arrived at the following design:</p>
+
+                    <p class=  "fw-bold">Picture of all the components secured in the car. Consider labeling your picture if you can’t see all the components </p>
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="col-md-6">
+                                <p>Overhead View</p>
+                                <img src="assets/img/lab4/car_top.jpg" height="400" width="400" class="img-fluid mb-3">
+                            </div>
+                
+                            <div class="col-md-6">
+                                <p>Underside View</p>
+                                <img src="assets/img/lab4/car_underside.jpg" height="400" width="400" class="img-fluid mb-3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <p> The Nano now faces upward for easy access to its ports and reset button, the two batteries tuck nicely into the provided battery compartment, and the motor drivers and their connections to the motors now have plenty of space in the underside compartment in case of crashes or bumps. </p>
+                        
+                    <p> Additionally, with the majority of the sensitive electronics and wires located to the top of the car,(albeit some stray wires will need to be more securely held down in case of flips), I expect this will make things much easier for me to service components and debug wiring issues when things inevitably break. </p>
+                
+                    <div class="subheading mb-3">Task 8: Lower Limit PWM </div>    
+            
+                    <p class = "fw-bold">Lower limit PWM value discussion </p>
+
+                    <p> After testing a range of PWM values on the Nano, I narrowed down that the lower limit PWM value to pass to the motor drivers was somewhere around 40 for the right motor and 50 for the left motor to overcome static friction and get the car in motion in a straight line. </p>
+
+                    <p> To get the car to turn in place from a standstill, I discovered that the PWM values needed to be even higher — around 140 for the left wheels to start turning, and around 100 for the right wheels. I suspect this could be due to the increased friction when skidding the tires along the ground in opposite directions to initiate the turn. </p>
+
+                    <div class="subheading mb-3">Task 9: Calibration Factor</div>
+                    <p>Calibration demonstration (discussion, video, code, pictures as needed)</p>
+
+                    <p> 
+                        I then attempted to get my robot to drive in a straight line for a length of at least 6 feet. 
+                        Using the tiles in the Duffield atrium to mark my distance travelled (which were 1ft by 1ft), I attempted to drive the robot for about 3 seconds to reach 6 ft. 
+                    </p>
+
+                    <p> 
+                        From my previous testing (in Task 6), I noticed that there was a discrepancy in the two geartrains that needed to be accounted for. I noticed that even when supplied with the exact same duty cycle, the right wheels spun for slightly longer and with seemingly more speed than the left wheels. 
+                        To get a basis for the difference between the two geartrains, I tested driving the robot straight with an estimated calibration factor of 1.8 (that is multiplying the PWM value of the left driver by 1.8 the value of the right) to correct for this discrepancy and see where/if the robot would still drift:
+                    </p>
+
+                    <div style = "text-align: center;">
+                        <iframe src="https://drive.google.com/file/d/1L51mIP_JoO2frEJPlk5_01JfYSz6U6fb/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+                    </div>
+
+                    <p> Noticing that I had overcorrected with the calibration factor and the robot now drifted too far to the right, I tested a calibration factor of 1.4 instead:</p>
+
+                    <div style = "text-align: center;">
+                        <iframe src="https://drive.google.com/file/d/1-QRiPtuWQybqYB6_DYISbi1zMYqYp0MJ/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+                    </div>
+                    <p> As shown above, the robot successfully traversed the 6 feet maintaining a relatively straight heading along the tiles!</p> 
+
+                    <p> Here is a snippet from the calibration factor testing code:</p>
+
+                    <script src="https://gist.github.com/evnleong/39b20112dc52fbeb1f7a1dfde3ea294a.js"></script>
+
+                    <div class="subheading mb-3">Task 10: Open Loop Testing</div>
+
+                    <p> Lastly, I tested open loop control of my robot to see if I could write a series of commands to have the robot drive straight out, turn 180 degrees, and return back to its initial starting position.</p>
+
+                    <p> Here is the video of that program running:</p>
+                    <iframe src="https://drive.google.com/file/d/1oK8RiCH22r4B_BX_ZHzu8KA3-8UqaWRV/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+                    
+                    <p> As we can see in the clip above, the robot attempts to make the full 180 degree pivot, and is quite close, but due to either some incorrect calibration factor/pwm value or a draining battery from previous runs, it is a couple degrees off from a complete turn and runs into the wall.</p>
+                    
+                    <p> Regardless, this was a successful test of trial and error-ing and having the robot make turns and navigate a pre-programmed path without having any data being fed back to the system to make corrections! </p>
+                    
+                    <p> And below is a snippet of the final code: </p>
+                    <script src="https://gist.github.com/evnleong/520a6a1ed8eb886585dcff0cee5889e6.js"></script>
+
+                </div>
+                <div class="flex-shrink-0"><span class="text-primary"></span></div>
+            </div>
+
+
+
+
+           
+            
+
+
+
+        </div>
+    </section>
+
+    
+
+    
+</body>
+</html>
