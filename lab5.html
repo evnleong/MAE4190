@@ -119,6 +119,10 @@
                     <script src="https://gist.github.com/evnleong/8f5bfd99a0d10a4d4c529e61b551bb84.js"></script>
 
                   <p>By doing this, I could avoid unnecessary data transmissions from failed tests, and had more control over when data was sent so that I could prepare my notification handler to receive data when data needed to be saved.</p>
+
+                  <p>To actually receive the data on the Python side, I setup a notification handler similar to in Labs 2 and 3 to parse the tof, pwm, and timestamp data from the retrieved messages</p>
+
+                  <img src="assets/img/lab5/notif_handler.png" class = "img-fluid mb-3">
                 
                   <p class = "fw-bold">Execute PID control over a fixed amount of time (e.g. 5s) while storing debugging data in arrays.</p>
 
