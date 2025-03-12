@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Lab 5: Linear PID and Interpolation - Evan Leong</title>
+    <title>Lab 6: Orientation - Evan Leong</title>
     <link href="css/styles.css" rel="stylesheet" />
       <link rel="icon" type="image/x-icon" href="assets/img/profile_photo.jpg" />
       <!-- Font Awesome icons (free version)-->
@@ -51,60 +51,20 @@
         </div>
     </nav>
 
-    <!-- Lab 5 Section -->
-    <section class="resume-section" id="lab5">
+    <!-- Lab 6 Section -->
+    <section class="resume-section" id="lab6">
       <div class="resume-section-content">
-          <h2 class="mb-5">Lab 5: Linear PID and Interpolation </h2>
+          <h2 class="mb-5">Lab 6: Orientation PID Control </h2>
           <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
               <div class="flex-grow-1">
-
-                <h3 class="mb-0">PID Background</h3>
-                <p>
-                  The output of a PID controller is given by the following formula acknowledged in class:
-                </p>
-                <p>
-                    \[
-                    u(t) = K_p e(t) + K_i \int e(t) dt + K_d \frac{d}{dt} e(t)
-                    \]
-                </p>
-                <p>
-                    Where:
-                    <ul>
-                        <li>\( u(t) \) = Control output</li>
-                        <li>\( e(t) \) = Error (setpoint - measured value)</li>
-                        <li>\( K_p \) = Proportional gain</li>
-                        <li>\( K_i \) = Integral gain</li>
-                        <li>\( K_d \) = Derivative gain</li>
-                    </ul>
-
-                    <p> Before beginning this week's lab, I wanted to gain a better understanding of the role that each component of the PID controller plays in the final control output. This understanding would help me make a better informed decision on which components to include, combine, or omit in my final design of implementing a real world PID controller.</p>
-
-                    <p>A P (Proportional) controller primarily focuses on the present error of the system. The control output is proportional to the current error, with a constant multiplier Kp.
-                      This means that a large error results in a large control output, helping to quickly reduce the error. However, a proportional-only controller typically leads to a steady-state error, as it cannot eliminate the error completely. </p>
-                      
-                    <p>A PI (Proportional-Integral) controller combines the proportional term with an integral term, which accumulates the error over time. The integral term helps to eliminate the steady-state error by adding a corrective action that grows over time if the error persists. This ensures that the controller can drive the system toward the setpoint even if small errors remain, which would not have been eliminated by the proportional term alone. </p>
-                      
-                    <p>Finally, a PID (Proportional-Integral-Derivative) controller adds a derivative term to the PI controller. The derivative term responds to the rate of change of the error, essentially predicting future error trends. This helps to dampen oscillations and reduce overshooting by providing a counteracting force when the error is changing too rapidly. </p>
-                    
-                    <p> The PID controller thus combines the advantages of all three components—quick correction of errors (P), elimination of steady-state error (I), and smooth control (D)—to provide a more robust and stable control system.</p>
-                    
-                </p>
-
-
+                
                   <h3 class="mb-0">Prelab</h3>
                   <div class="subheading mb-3">Debugging System Setup</div>
-
-                  <p> Before beginning this week's lab, I started with modifying my current robot control setup to facilitate faster debugging, 
-                    remote control and configuration of PID and its parameters, and the addition of a failsafe to shut off the robot's motors in case of a BLE disconnect. </p>
-                  <p class = "fw-bold">Have the robot controller start on an input from your computer sent over Bluetooth </p>
                   
-                  <p> I began by setting up a flag system to start my PID controller on input from my computer. 
-                    On the Arduino side, I initialized a global flag called "pid_start", which is initially set to false.
-                    I then added commands "START_PID" and "STOP_PID" that I could send from my laptop to the board to toggle this flag. 
-                    Later in my main loop, I can make PID controller calls conditioned on this flag's status. </p>
-
-                  <script src="https://gist.github.com/evnleong/5a52b6d6302b78385ae0d2fd65eb92e5.js"></script>
-
+                  <p> My design for a debugging system remained mostly the same as my Lab 5 implementation, with the addition of a few key flags specific to orientation control. </p>
+                    
+                  <p> I kept the same setup for sending and retreiving gains from Lab 5 for remote control and configuration of PID, as well as my failsafe to shut off the robot's motors in case of a BLE disconnect. </p>
+                  
                   <p class = "fw-bold"> Clearly describe how you handle sending and receiving data over Bluetooth.
                     Consider adding code snippets as necessary to showcase how you implemented this on Arduino and Python</p>
 
@@ -118,31 +78,7 @@
                   <p>I then isolated sending the data to a separate command called "SEND_DATA" that I could trigger only when I wanted to save the data from a test:</p>
                     <script src="https://gist.github.com/evnleong/8f5bfd99a0d10a4d4c529e61b551bb84.js"></script>
 
-                  <p>By doing this, I could avoid unnecessary data transmissions from failed tests, and had more control over when data was sent so that I could prepare my notification handler to receive data when data needed to be saved.</p>
-
-                  <p>To actually receive the data on the Python side, I setup a notification handler similar to in Labs 2 and 3 to parse the tof, pwm, and timestamp data from the retrieved messages</p>
-
-                  <img src="assets/img/lab5/notif_handler.png" class = "img-fluid mb-3">
-                
-                  <p class = "fw-bold">Execute PID control over a fixed amount of time (e.g. 5s) while storing debugging data in arrays.</p>
-
-                  <p> Putting the flag system and the save/send data functions together, I finalized my main loop to allow remote control over PID for a fixed period of time (data). Additionally, if the Nano ever became disconnected, I wrote a stop motors function to immediately send a duty cycle of 0 to both motor drivers to halt the car.:</p> 
-
-                  <script src="https://gist.github.com/evnleong/f2e3ab604958b7131fb6dd6911158308.js"></script>
-
-                  <p> Stop motors function :</p>
-
-                  <script src="https://gist.github.com/evnleong/83d1c0032808fe62ef2dd751f4b3315b.js"></script>
-
-                  <p class = "fw-bold"> You can also consider writing a Bluetooth command that lets you update the gains without having to reprogram the Artemis.</p>
-
-                  <p> Lastly, I implemented a system to remotely set parameters that would factor into my testing (PID gains, Max Speed, Calibration Factor) -- 
-                    doing this allowed me to minimize the amount of times I would need to connect to my Nano and reupload code between tests. </p>
-                  <script src="https://gist.github.com/evnleong/ac2b38fc90edce227f74bbdf9bb73b55.js"></script>
-
-                  <p> A snapshot of the commands I could then use to remotely tweak these gains from the Python side is shown below: </p>
-
-                  <img src= "assets/img/lab5/pythongains.png" class ="img-fluid mb-3">
+               
                 
               </div>
               <div class="flex-shrink-0"><span class="text-primary"></span></div>
@@ -153,7 +89,29 @@
 
                   <div class="subheading mb-3">Task 1: P Controller Setup </div>
 
-                  <p> I first started by initializing my ToF sensor input. Due to the constraints of the lab task (stopping within 1ft from a distance of 2-4 meters) I thought it would be a good idea to start with the following parameters:</p>
+                  <p class = "fw-bold"> Does your sensor have any bias, and are there ways to fix this? How fast does your error grow as a result of this bias? Consider using the onboard digital motion processor (DMP) built into your IMU to minimize yaw drift.</p> 
+
+                  <p> Before starting with the integration of the IMU into the PID control of my robot, I wanted to address this question about sensor bias. 
+                    As seen in Lab 3: IMU, there was a significant amount of drift seen in the gyroscope readings over time. </p>
+
+                  <p> Like </p>
+
+                  <p> One way to fix/counteract this was to use a complementary filter like we had done in Lab 3, and fuse data from other readings. </p>
+
+
+                  <p> From some advice from the professor, I was interested in attempting to use the DMP (Digital Motion Processor) on the board in order to improve my gyro</p>
+
+                  <p class = "fw-bold">You should integrate your gyroscope to get an estimate for the orientation of the robot. </p>
+
+                  <p> To begin this week's </p>
+
+                  <p class = "fw-bold"> Are there any problems that digital integration might lead to over time? Are there ways to minimize these problems?</p> 
+                  
+                  <p class = "fw-bold">Are there limitations on the sensor itself to be aware of? What is the maximum rotational velocity that the gyroscope can read (look at spec sheets and code documentation on github). Is this sufficient for our applications, and is there was to configure this parameter? </p>
+
+                  <p> According to the data sheet, the maximum rotational velocity that the gyroscope can read is 2000 dps (degrees per second). This can be configured by the GYRO_FR_FSEL parameter.  </p>
+
+                  <p> I first started by . Due to the constraints of the lab task (stopping within 1ft from a distance of 2-4 meters) I thought it would be a good idea to start with the following parameters:</p>
 
                   <p class = "fw-bold"> Range and Sampling Time Discussion </p>
 
@@ -169,10 +127,8 @@
 
                   <script src="https://gist.github.com/evnleong/9f9f8b5aced7632bf9367370facb7dbb.js"></script>
 
-                  <p> I then wrote a function that could map these into an operable range of values that my motor driver could receive (values between 40(due to deadband) and 255(Max PWM)), and calls the appropriate logic to either drive the car forward, stop, or move in reverse, directly proportional to the output of the p controller :</p>
+                  <p> I then wrote a function that could map these into an operable range of values that my motor driver could receive (values between 40(due to deadband) and 255(Max PWM)), and calls the appropriate logic to either drive the car forward, stop, or move in reverse, directly proportional to the output of the p controller. </p>
                 
-                  <script src="https://gist.github.com/evnleong/307ead08ede542d04bc39d3cc0b889d3.js"></script>
-
                   <p> As you will notice in the <i>pid_to_pwm</i> function, for outputs of my PID controller with values under 40, I run the stop motors function (which just writes a PWM of 0 to the drivers) instead of letting the motors ramp up to some value above 40 to overcome the deadband. I came to this conclusion through multiple trials as I noticed that ramping up the PWM value above
                     deadband to overcome static friction would actually cause excess overshoots and oscillations without ever settling at the setpoint when compared to just stopping. 
                     This could likely be due to the lag in ToF sensing time (which directly restricted the rate of my PID control) in proportion to the dynamics of my system. By the time the robot had detected it was moving away from the target and tried to ramp up speed, it had already overshot the setpoint and would do this indefinitely. </p>
@@ -375,6 +331,11 @@
                      This gives us a distance of around 417 mm travelled in 20 ms or a max linear speed of <b>20 m/s</b>, which seems a little too fast! -- this could very easily be likely to an outlier reading from the ToF sensor causing a huge jump in the interpolated value, and likely is not reliable for an accurate max linear speed calculation. </p>
 
                   <p> Instead, I think a more reasonable approach could be to look at the average linear speed over the duration of the test, which over the span of about 3 seconds, my robot traveled a distance of 3 meters, or a maximum average linear speed of approximately <b>1 m/s.</b> 
+
+
+                    <div class="subheading mb-3">Collaboration Statement  </div>
+
+
               </div>
               <div class="flex-shrink-0"><span class="text-primary"></span></div>
           </div>
