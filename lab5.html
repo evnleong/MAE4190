@@ -367,12 +367,12 @@
 
                   <img src="assets/img/lab5/100run.png" class = "img-fluid mb-3">
 
-                  <p> As we can see in the recorded ToF data, the initial interpolated distanc measurements oscillate between 0 and the actual measured distance as the ToF tries to stabilize and interpolate data until 2 full prior measurements from the ToF can be taken. </p>
+                  <p> As we can see in the recorded ToF data, the initial interpolated distance measurements oscillate between 0 and the actual measured distance as the ToF tries to stabilize and interpolate data until 2 full prior measurements from the ToF can be taken. </p>
 
                   <p> We can also see that the robot quickly approaches the setpoint and although there is some small steady state error (likely from attenuating my integral term so much) the robot lands pretty close to the setpoint (settling around 380mm)! </p>
                  
                   <p> To calculate the max linear speed acheived, I saved a comma separated list of timestamped readings from the ToF. Using the plot as a reference, the steepest slope (after the interpolated values stabilizes) is in the jump from datapoints 2653.642 mm to 2236.0 mm which occured at times 1300412.0 ms, 1300423.0 ms (times on the chart are normalized on an initial program time of 1299301.0) respectively.
-                     This gives us a distance of around 417 mm travelled in 20 ms or a max linear speed of <b>20 m/s</b>, which seems a little too fast! -- this could very easily be likely to an outlier reading from the ToF sensor causing a huge jump in the interpolated value, and likely is not reliable for an accurate max linear speed calculation. </p>
+                     This gives us a distance of around 417 mm travelled in 20 ms or a max linear speed of <b>20 m/s</b>, which seems a little too fast! -- this could very likely be due to an outlier reading from the ToF sensor causing a huge jump in the interpolated value, and is likely not reliable for an accurate max linear speed calculation. </p>
 
                   <p> Instead, I think a more reasonable approach could be to look at the average linear speed over the duration of the test, which over the span of about 3 seconds, my robot traveled a distance of 3 meters, or a maximum average linear speed of approximately <b>1 m/s.</b> 
               </div>
@@ -380,7 +380,11 @@
           </div>
       </div>
   </section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
 
     
 </body>
 </html>
+
+

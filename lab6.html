@@ -61,25 +61,32 @@
                   <h3 class="mb-0">Prelab</h3>
                   <div class="subheading mb-3">Debugging System Setup</div>
                   
-                  <p> My design for a debugging system remained mostly the same as my Lab 5 implementation, with the addition of a few key flags specific to orientation control. </p>
-                    
-                  <p> I kept the same setup for sending and retreiving gains from Lab 5 for remote control and configuration of PID, as well as my failsafe to shut off the robot's motors in case of a BLE disconnect. </p>
+                  <p> My design for a debugging system remained mostly the same as my Lab 5 implementation, with the addition of a new parameter for adjusting the angle setpoint. </p>
                   
+                  <script src="https://gist.github.com/evnleong/187a0e1797f64af084bf3876cb0aaefe.js"></script>
+
+                  <p> In the implementation above, this new function sets the global variable <i>setpoint</i> to the newly received setpoint. In my main PID loop, this global setpoint variable is referenced so that when a new setpoint is received over BLE while the PID loop is running,
+                  subsequent PID calculations are then based off of the new setpoint, allowing for setpoint updates on the fly. </p>
+                 
                   <p class = "fw-bold"> Clearly describe how you handle sending and receiving data over Bluetooth.
                     Consider adding code snippets as necessary to showcase how you implemented this on Arduino and Python</p>
 
+                  <p> I also kept a very similar setup for sending and retreiving gains from Lab 5 for remote control and configuration of PID, as well as my failsafe to shut off the robot's motors in case of a BLE disconnect. </p>
+
                   <p> To handle sending and receiving data from my PID controlled runs, I first initialized a 2D array in heap memory of a specified size on system startup in a similar approach to my data collection method in Labs 2 & 3. </p>
 
-                  <p> While PID control is on and there is still available space in the arrays, I track timestamped ToF sensor information and the inputs into my motors and append that data into the data array.  </p>
+                  <p> While PID control is on and there is still available space in the IMU array, I obtain and store timestamped IMU sensor information and the inputs into my motors, and append that data into the data array.  </p>
 
-                  <script src="https://gist.github.com/evnleong/0d92da94317db66a9993f67614d2a406.js"></script>
+                  <script src="https://gist.github.com/evnleong/adf6357e430e94f60e9c34c6f44712c9.js"></script>
+
+                  <p>Similar to Lab 5, I isolated my data sending function to a separate command called "SEND_ANGULAR_DATA" that I could trigger only when I wanted to save the data from a test: </p>
+                    <script src="https://gist.github.com/evnleong/9d0159f671115eb06c799e7c0975df25.js"></script>
 
 
-                  <p>I then isolated sending the data to a separate command called "SEND_DATA" that I could trigger only when I wanted to save the data from a test:</p>
-                    <script src="https://gist.github.com/evnleong/8f5bfd99a0d10a4d4c529e61b551bb84.js"></script>
+                  <p> I could then retrieve transmitted values from my laptop with the following notification handler:</p>
+                  
 
-               
-                
+                  <img src= "assets/img/lab6/notif_handler.png" class = "img-fluid mb-3">
               </div>
               <div class="flex-shrink-0"><span class="text-primary"></span></div>
           </div>
@@ -87,260 +94,218 @@
               <div class="flex-grow-1">
                   <h3 class="mb-0">Lab Tasks</h3>
 
-                  <div class="subheading mb-3">Task 1: P Controller Setup </div>
-
-                  <p class = "fw-bold"> Does your sensor have any bias, and are there ways to fix this? How fast does your error grow as a result of this bias? Consider using the onboard digital motion processor (DMP) built into your IMU to minimize yaw drift.</p> 
-
-                  <p> Before starting with the integration of the IMU into the PID control of my robot, I wanted to address this question about sensor bias. 
-                    As seen in Lab 3: IMU, there was a significant amount of drift seen in the gyroscope readings over time. </p>
-
-                  <p> Like </p>
-
-                  <p> One way to fix/counteract this was to use a complementary filter like we had done in Lab 3, and fuse data from other readings. </p>
-
-
-                  <p> From some advice from the professor, I was interested in attempting to use the DMP (Digital Motion Processor) on the board in order to improve my gyro</p>
+                  <div class="subheading mb-3">PID Input Signal </div>
 
                   <p class = "fw-bold">You should integrate your gyroscope to get an estimate for the orientation of the robot. </p>
 
-                  <p> To begin this week's </p>
+                  <p> To begin this week's lab, I needed to integrate readings from the IMU's gyroscope in order to estimate the orientation of my robot around its z-axis (yaw).</p>
 
-                  <p class = "fw-bold"> Are there any problems that digital integration might lead to over time? Are there ways to minimize these problems?</p> 
+                  <p class = "fw-bold"> Does your sensor have any bias?  Are there any problems that digital integration might lead to over time? Are there ways to minimize these problems?</p>
+
+                  <p>The ICM-20948's gyroscope does have some bias as discovered in the "Pitch Roll Yaw" section of Lab 2. </p>
                   
-                  <p class = "fw-bold">Are there limitations on the sensor itself to be aware of? What is the maximum rotational velocity that the gyroscope can read (look at spec sheets and code documentation on github). Is this sufficient for our applications, and is there was to configure this parameter? </p>
+                  <p>Even when placed perfectly still on a table and without any movement around any axis, the gyroscope has a very slight initial offset from absolute 0 in the roll, pitch, and yaw axes. 
+                   This error worsens over time as these readings are digitally integrated, resulting in a very visible 'drift' in the recorded angle readings provided by the gyroscope over time (see Lab 2 graphs).
+                  </p>
 
-                  <p> According to the data sheet, the maximum rotational velocity that the gyroscope can read is 2000 dps (degrees per second). This can be configured by the GYRO_FR_FSEL parameter.  </p>
+                  <p> One way to minimize/correct the issue of bias is to subtract the initial bias offset collected on startup from the gyroscope from all future readings from the gyroscope as a correction.</p>
 
-                  <p> I first started by . Due to the constraints of the lab task (stopping within 1ft from a distance of 2-4 meters) I thought it would be a good idea to start with the following parameters:</p>
+                  <p> One way to minimize the subsequent drift is to use a complementary filter like we had done in Lab 2, which incorporates inertial measurement data from other sensors on the IMU (like the accelerometer or magnetometer) to provide another form of correction. </p>
+                  
+                  <p> Another correction method, as mentioned briefly in class, was to use the IMU's onboard DMP (Digital Motion Processor) which uses some sensor fusion algorithms to fuse data from the gyroscope, magnetometer and accelerometer to output calibrated quaternion data. </p> </p>
+    
+                  <p class = "fw-bold"> Consider using the onboard digital motion processor (DMP) built into your IMU to minimize yaw drift.</p>
+
+                  <p> From some advice from the professor and classmates, I was interested in attempting to use the DMP (Digital Motion Processor) on the board in order to improve the accuracy and precision of my gyroscope readings.</p>
+                  <p> I thought this would save a lot of time in the future, and improve the performance of my PID controller.  </p>        
+                  
+                  <p> To do this, I followed the provided tutorial from Stephan Wagner, and added setup functions to initialize and enable the DMP:</p>
+                  
+                  <script src="https://gist.github.com/evnleong/b1728e46e37a452c62319253b0a83be5.js"></script>
+
+                  <p> One really important parameter to note is the second argument passed to the myICM.setDMPODRrate() function.
+                     Like Stephan mentions in his tutorial, unexpected behavior occurs when the DMP outputs data faster than the PID loop can pull data from the FIFO. </p>
+
+                  <p> For me, this resulted in nan values being returned by the DMP, even when myICM.status showed that data was available. </p>
+
+                  <p> I was able to fix this by passing a value of <b>2</b> to myICM.setDMPODRrate(), which slows down the DMP ODR to around 26Hz so that my calls to retrieve data from the FIFO could outpace the DMP output.
+                    However, doing this directly affects the sampling rate as I will cover in my "Range and Sampling Time Discussion"</p>
+
+                  <p> With the DMP initialized, I could then retrieve yaw values with a new <i>get_yaw</i> function: </p>
+
+                  <script src="https://gist.github.com/evnleong/0f536cce90162a38bf434c7a72905919.js"></script>
+                 
+                  <p class = "fw-bold"> Are there limitations on the sensor itself to be aware of? What is the maximum rotational velocity that the gyroscope can read (look at spec sheets and code documentation on github). 
+                    Is this sufficient for our applications, and are there ways to configure this parameter?</p>
+
+                  <p> Yes, there are limitations to the gyroscope that we need to be aware of.
+                     According to the ICM-20948's data sheet, the maximum rotational velocity that the gyroscope can read is 2000 dps (degrees per second).
+                     This maximum appears to be configurable using the GYRO_FR_FSEL register, and looking into Sparkfun's ICM-20948 library implementation, 
+                     when the DMP is enabled, the gyroscope's FSR (full scale range) is set to 2000 dps by default (see below).  
+                  </p>
+
+                  <div style = "text-align: center;">
+                    <img src= "assets/img/lab6/icm20948-cpp.png" class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p> A setting of 2000 dps hardly feels like a limitation, however, as this value seems to be more than sufficient for our use cases -- 
+                     although it is a very fast robot, our robot will never likely make or need to make more than 6 full rotations per second in order to reach its setpoint from any orientation.</p>
+
+                  
+                  <div class="subheading mb-3">Programming Implementation </div>
+                
+                  <p> Once I had the yaw readings from the DMP finalized, I could begin with my implementation of a PID controller for orientation control. </p>
+
+                  <p> Similarly to Lab 5, I wanted to first start by considering the range and sampling time of my sensor.</p>
 
                   <p class = "fw-bold"> Range and Sampling Time Discussion </p>
 
-                  <p>Distance Mode = Long (From Lab 3 data, distance measurements in short mode were unreliable for obstacles beyond 1.2 meters. Long mode provides more accurate readings for distances between 2-4 meters from the starting position.)</p>
+                  <p>Range of the gyroscope = 360 degrees, (-180 deg , +180 deg) </p>
 
-                  <p>Timing Budget = 20 ms (fastest timing budget for Long Ranging mode -- necessary as speed of ToF sensor sampling rate was limiting factor of main loop as discovered in Lab 3.) </p>
+                  <p>Sampling Rate = 20 Hz, 1 reading approx. every 50 ms (found by Serial printing output to terminal whenever calls to <i>get_yaw</i> return true and a valid yaw angle.) </p>
                   
-                  <script src="https://gist.github.com/evnleong/5e51a575e819a19f3b42e0427bd75137.js"></script>
+                  <img src = "assets/img/lab6/samplingTime.png"  class = "img-fluid mb-3">
 
-                  <p> Next, knowing that settling on a final design for my PID controller would require a lot of finetuning and was highly dependent on my robot's unique configuration and dynamics, I decided it would be best to start with an iterative approach to building my PID controller.</p>
-
-                  <p> Starting with the simplest proportional controller, I created a function called <i>p_controller</i> which simply calculates the current error between my robot's distance from the wall and the target distance of 304mm from the wall. </p>
-
-                  <script src="https://gist.github.com/evnleong/9f9f8b5aced7632bf9367370facb7dbb.js"></script>
-
-                  <p> I then wrote a function that could map these into an operable range of values that my motor driver could receive (values between 40(due to deadband) and 255(Max PWM)), and calls the appropriate logic to either drive the car forward, stop, or move in reverse, directly proportional to the output of the p controller. </p>
-                
-                  <p> As you will notice in the <i>pid_to_pwm</i> function, for outputs of my PID controller with values under 40, I run the stop motors function (which just writes a PWM of 0 to the drivers) instead of letting the motors ramp up to some value above 40 to overcome the deadband. I came to this conclusion through multiple trials as I noticed that ramping up the PWM value above
-                    deadband to overcome static friction would actually cause excess overshoots and oscillations without ever settling at the setpoint when compared to just stopping. 
-                    This could likely be due to the lag in ToF sensing time (which directly restricted the rate of my PID control) in proportion to the dynamics of my system. By the time the robot had detected it was moving away from the target and tried to ramp up speed, it had already overshot the setpoint and would do this indefinitely. </p>
-
-                  <p class = "fw-bold"> Tuning </p>
-
-                  <p> Due to the presence of so many different factors and variables when tuning (Max Speed, Calibration factor, surface type, etc. ), I figured my best approach would be to follow a heuristic when tweaking my parameters until a desired outcome was achieved. </p>
-                  <p> Following one of the heuristics covered in lecture, I started with an incredibly small proportional term gain of 0.005. I would then gradually increase my gain until I hit oscillation or overshoot, and then reduce by a factor of 2 to 4.</p>
-
-                  <p> Using a gain of 0.005, CF = 1.8, Max PWM of 100, and on my table setup, the car barely moved.</p>
-                  <p> Looking back, this was to be expected. A gain of 0.005 * 2m (the error from a starting position of 2m away from the wall),
-                    would result in a PWM motor input of around 10, well within the deadband of my motors, and thus just have the robot constantly run the stop motors function.
-                  </p>
-                    
-                  <p> Following the heuristic, I then ramped up the proportional gain to 0.04, and keeping all other parameters the same, I ran the following test and collected the sensor data after:</p>
+                  <p> This sampling rate seems slow but makes sense for my setup. The sampling rate is not only bottlenecked by the output rate of the DMP to the FIFO (which from earlier should have an ODR of around 26Hz), but also will only run when yaw data retrieval from the DMP returns an available status.</p>
                   
-
-                  <p> This time the car was able to accelerate from standstill, but as in the previous test once the error got below the deadband threshold, the car stalled. </p>
-
-                  <div style= "text-align: center;">
-                    <iframe src="https://drive.google.com/file/d/12cyUiXBUUAJa9Ln6jjvl5jTojOjS6dSF/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
-                  </div>
-
-                  <p>Sensor Data (CF = 1.8, Max PWM = 100, KP = 0.04, starting position = 2m): </p>
-
-                  <img src = "assets/img/lab5/04pgain.png" class=  "img-fluid mb-3">
-
-                  <p> As the gain was clearly too low from the previous trials, I decided to increase the gain to 0.08. This time, the robot actually overshot its target position and remained approximately 60 mm off from the target, in an area of steady state error.</p>
-
-                  <div style= "text-align: center;">
-                    <iframe src="https://drive.google.com/file/d/1fWAm8vIpa3yU0YwVkVcUo8vaN78fBLFD/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
-                  </div>
+                  <p> Although I hoped to find a way to increase the sampling rate, from my experimentation, this sampling rate ended up being the fastest rate that I could sample the DMP without emptying the buffer and causing unexpected yaw values to be returned.</p>
 
 
-                  Sensor Data (CF = 1.8, Max PWM = 100, KP = 0.08, starting position = 2m):
+                  <p class = "fw-bold"> PD Controller </p>
 
-                  <img src = "assets/img/lab5/08pgain.png" class= "img-fluid mb-3">
-
-                  <p>At this point, if I continued to follow the heuristic, I would have needed to cut the gain by a factor of 2 which would have brought me back to a gain of 0.04. 
-                    Since I had already tested this gain and seen its result, I deviated from the heuristic a little here by testing a slightly lower gain of 0.07, where I acheived this result:</p>
-                    
-                    <div style= "text-align: center;">
-                      <iframe src="https://drive.google.com/file/d/1Iv0xiebcpWz2vFQwUEYqr6SI4NJuAham/preview" width="320" height="240" allow="autoplay"></iframe>
-                    </div>
-                 
-
-                  Sensor Data (CF = 1.8, Max PWM = 100, KP = 0.07, starting position = 2m):
-                  <img src = "assets/img/lab5/07pgain.png" class= "img-fluid mb-3">
-
-                  <p> As can be seen above, the robot stops relatively close to the desired setpoint (the 1ft mark is the right edge of the 1ft tape marker), but after multiple additional trials, it seemed that without any additional control input there is not much I can do about the steady state error without an additional controller component. 
-                    It was at this point that I decided to add on the integral controller to see if it could help reduce this steady state error. </p>
-                
-                  <div class="subheading mb-3">Task 2: PI Controller Testing </div>
-
-                  <p> As mentioned earlier, the addition of the I component was intended to address the consistent steady state error that appeared with my p_controller. 
-                    The integral term should accumulate error in its errorSum variable, and the longer this error persists, the larger this term will grow, hopefully providing enough output to my robot to adjust to the target position more accurately.</p>
-
-                  <p> To replace my <i>p_controller</i> function, I created a new function: <i> pi_controller </i> that would continually track the sum of the errror overtime into an integral term and add it to the output of the p_controller.</p>
-
-                  <p> A snippet of my code looks like this: </p>
-                  <script src="https://gist.github.com/evnleong/2724f8472cd6698c8f0d45a205ae81c8.js"></script>
-
-                  <div class="fw-bold">Tuning </div>
-
-                  <p> I then tuned my PI controller using the same heuristic as before. Starting with very little integral component at a Ki of 0.0005, I actually got the robot to land almost perfectly on target! </p>
-
-                   <div style= "text-align: center;">
-                    <iframe src="https://drive.google.com/file/d/1gjoDCNZJu8KSQ2uN8mBKyVjFbM1-bkXl/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
-                   </div>
-                  
-                 <p>Sensor Data (CF = 1.8, Max PWM = 100, KP = 0.07, KI = 0.0005 starting position = 2m): </p> 
-                  <img src = "assets/img/lab5/070005.png"  class = "img-fluid mb-3"> 
-
-                  <p> As this first test was pretty perfectly aligned with the target,
-                     I wanted to see what would have happened if I had chosen a larger gain value instead, as well as check if the value I had chosen was just a fluke. Increasing the gain to a Ki of 0.005 (an order of magnitude greater), I got the following results: 
-                    
-                  <div style= "text-align: center;">
-                  <iframe src="https://drive.google.com/file/d/1fr5oJWbVAK47sGFZNDL_Cle7sgESmn6I/preview" width="640" height="480" allow="autoplay"></iframe>
-                  </div>
-
-                  <p> The car well overshoots its mark, which confirmed my expectations that too high of an integral gain would cause the integral term to outpace the proportional term causing the robot to overshoot its mark. </p>
-
-                  <p> </p> Sensor Data (CF = 1.8, Max PWM = 100, KP = 0.07, KI = 0.005 starting position = 2m):
-                  <img src = "assets/img/lab5/0705.png"  class = "img-fluid mb-3"> 
+                  <p> Next, using my pi_controller from Lab 5 as a basis for this lab, I decided to attempt PD orientation control in this lab. 
 
                   <p class = "fw-bold"> P/I/D discussion (Kp/Ki/Kd values chosen, why you chose a combination of controllers, etc.) </p>
+                  <p> My reasoning for settling on PD for this lab was twofold.</p>
 
-                  <p> At this point I was pretty happy with the results of my PI controller.</p>
+                  <p> Firstly, before settling on a PD controller, I had tested just my p controller with orientation data and would have drastic overshoots during times where the setpoint changed dramatically.
+                    For example, in a setpoint change of from 0 to 180, the robot would rapidly acclerate to compensate for the large error, overshoot its setpoint, and carry that error into future rotations, resulting in the robot spinning out and never settling. </p>
 
-                  <p> As described earlier, the I term seemed to help remove a lot of the steady state error (when the right gain value was selected) that existed with the p controller alone. 
-                    The addition of the derivative term could help with dampening the harsh acceleration curve or rapid changes outputted by the proportional controller, but at this point in the lab with the PI controller mostly working, 
-                    I decided that I wanted to address the sampling rate of my ToF sensors, which through my testing of different gains seemed to be a bigger bottleneck in my PI controller's performance, before 
-                    adding on a D component or testing different surfaces and distances.
-                  </p>
-
-                  <div class="subheading mb-3">Task 3: Linear Interpolation  </div>
-
-                  <p class ="fw-bold"> 1. Determine the frequency at which the ToF sensor is returning new data. </p>
-
-                  <p> To determine the frequency of the ToF sensor (and the output of the PID controller that it is bottlenecking), I added some print statements (shown below) to print out each ToF measurement, corresponding PID output, and the measurement time. </p>
-                  
-                  <div style = "text-align: center;">
-                    <img src = "assets/img/lab5/pid_tof_coupled_code.png" width = 300 height = 300 class = "img-fluid mb-3">
-
-                  </div>
-                 
-                  <p> From the following results, I calculated an average time between measurements of approximately 120ms or 1/.12 = 8 Hz</p>
-
-                  <div style = "text-align: center;">
-                    <img src = "assets/img/lab5/pid_tof_coupled.png" width = 300 height = 300 class = "img-fluid mb-3">
-
-                  </div>
-
-                  <p class ="fw-bold"> 2. Change your loop to calulate the PID control every loop, even if there is no new data from the ToF sensor. </p>
-
-                  <p> Altering my code so that I calculate the PID control regardless of whether the ToF sensor has new data ready, a snippet of my resulting main loop looks like this:</p>
-
-                  <div style = "text-align: center;">
-                    <img src = "assets/img/lab5/pid_uncoupled_code.png" width = 400 height = 400 class = "img-fluid mb-3">
-                  </div>
-
-                  <p class ="fw-bold">3. How fast is the PID control loop running? Compare this rate to ToF sensor rate.</p>
-
-                  <p > In the snippet of my serial monitor below, there is on average about 14.2 ms between PID control outputs, or a rate of 1/.0142 = 70Hz. We can also see below that there is a lot of repetition between datapoints as expected as the PID function is still using old ToF data that can only refresh at the slower rate.
-                     Compared to the ToF sensor rate, this is almost 9x faster! </p>
-                  <div style = "text-align: center;">
-                    <img src = "assets/img/lab5/pid_uncoupled.png" width = 400 height = 400 class = "img-fluid mb-3">
-                  </div>
-
-                  <p class = "fw-bold">4. Rather than use an old datapoint to calulate the PID control, extrapolate an estimate for the car's distance to the wall using the last two datareadings from the ToF sensor.</p>
-
-
-                  <p> To fix this recycling of old data, we will use linear interpolation to extrapolate datapoints for times when the ToF sensor data is not ready.</p>
-                  <p>
-                      The linear interpolation formula is given by the following equation:
-                  </p>
-                  <p>
-                      \[
-                      f(x) = f(x_0) + \frac{f(x_1) - f(x_0)}{x_1 - x_0} (x - x_0)
-                      \]
-                  </p>
-                  <p>
-                      Where:
-                      <ul>
-                          <li>\( f(x) \) = Interpolated value at \( x \)</li>
-                          <li>\( x_0, x_1 \) = Known points</li>
-                          <li>\( f(x_0), f(x_1) \) = Function values at \( x_0 \) and \( x_1 \)</li>
-                          <li>\( x \) = The point at which we interpolate</li>
-                      </ul>
-                    </p>
-
-                  <p> To incorporate this formula into my code, I created four new global variables to store data points of \( f(x_0), f(x_1)\)  and \( x_0, x_1 \) (the two most recently recorded ToF values and their timestamps) as well as \(x\) (the timestamp that we want to interpolate a distance value for). </p>
+                  <p> By adding this derivative term, I was hoping it would help smooth out the controller's response by accounting for the rapidly shrinking error as the robot snaps to the setpoint with the p term, and 
+                  slow down/counteract the rapid changes in the error, providing a damping to prevent overshooting and oscillations. </p>
                     
-                  <p> I then created a new function <i>interpolated_distance()</i> which, when given these two data points and the current time, would be called to interpolate based on these two most recently recorded points (if they exist) and return an interpolated distance value.</p>
+                  <p> Secondly, I chose to omit the integral term this time around as I did not feel it had contributed much in Lab 5, and if it did it would need to be significantly dampened/throttled in order to not send outrageous pwm signals to the motor, which at that point made it a relatively futile addition. </p>
+                  <p> Furthermore, during my testing, the steady state error was well within an acceptable margin of approx 10 degress, which I was okay with for this lab.</p>
+                  <p> I do acknowlege that adding an integral term would very likely help reduce this steady state error, but given the time constraints of testing I did not feel that this extra effort would be worth it.</p>
 
-                  <script src="https://gist.github.com/evnleong/bb24fdd0d51c4d78aad2ee334c617261.js"></script>
+                  <p> </p>Creating a function called <i>pd_controller_angular</i> which calculates the current error between the robot's yaw angle and the current yaw setpoint. It also incorporates the derivative term, taking into account the derivative of the error. </p>
 
+                  <script src="https://gist.github.com/evnleong/da23254687800e88f994c07cd18c9539.js"></script>
 
-                  <p> A snippet taken from my final linear interpolation loop looks something like this:</p>
-
-                  <script src="https://gist.github.com/evnleong/e8073b6585bc46ead6e4b5394644bb4d.js"></script>
-
-                  <p>To verify the results of my interpolation function, I sent my collected interpolated data alongside my measured ToF data over BLE for plotting: </p>
-
-                  <div style = "text-align: center;">
-                  <img src = "assets/img/lab5/interpolation_graph.png" width = 400 height = 400 class = "img-fluid mb-3"> 
-                  </div>
-
-                  <p> As we can see, when a new datapoint from the ToF sensor becomes available, the interpolated value corrects to the new measured value and interpolates off of the newly added point and its prior.</p>
-                  <p> One thing that I noticed from plotting this data was that initially, newly interpolated values are stuck at 0 for all timestamps up until the first two measured points from the ToF sensor.
-                     Looking back, this makes sense as the interpolation requires at least two prior data points in order to base future interpolations off of. I can forsee this being a minor issue when using purely interpolated data as input to my PID controller. For the first few iterations of the PID loop, while my ToF sensor builds up data, the interpolated distance will be 0 and my car might stall or actually move backward for the first few milliseconds as it will think it has overshot the target. </p>
-                  <p> I also added several debug statements to my function to print out interpolated values when possible.</p>
-                  <div style = "text-align: center;">
-                  <img src = "assets/img/lab5/interpolation_print.png" height = 400 width = 400 class = "img-fluid mb-3">  
-                  </div>
-
-                  <p> As expected, timestamps between our new interpolated measurements run about as fast as the main loop from the previous step-- an average of 20 ms now (likely due to additional print statements and interpolation calculations).</p>
-                  <div class = "subheading mb-3"> Document Max Linear Speed Acheivable </div>
-
-                  <p> Finally, to conclude the lab, I decided to test the robustness of my new interpolated setup on a different surface and a farther distance, as well as find the max linear speed achievable by my car while still meeting the stopping requirements: </p>
+                  <p> I also needed to edit the mapping function that maps these into an operable range of values that my motor driver could receive (values between 100(due to turning deadband (found in Lab 4)) and 255(Max PWM)), and calls the appropriate logic to either rotate the robot clockwise or counterclockwise directly proportional to the output of the p controller. </p>
                 
-                  <p> As I had tested on a smooth table before, I wanted to conduct this test on a surface with a higher coefficient of friction, like carpet flooring. </p>
-                  <p> Using a max PWM limit of 255, keeping my proportional gain of 0.07 constant, and tweaking my Ki gain to Ki = 0.00001 (any more and my integral term had enough time to cause massive overshoot) -- (Looking back this could likely be worked around by applying some limit to how large the integral term could get instead of hindering the integral gain by this much) I acheived the following successful run from a distance of about 3 meters:  </p>
+                  <script src="https://gist.github.com/evnleong/61209e1b9a6652bec34d4cf2d3de86fb.js"></script>
 
-                  <div style = "text-align: center;">
-                    <iframe src="https://drive.google.com/file/d/1NZHbT_x8x8fxoCb80jZSnePxP83mX3or/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+                  <p> Similar to my implementation for Lab 5, you will notice in the <i>pid_to_pwm_angular</i> function that for outputs of my PID controller with values under 10, I run the stop motors function (which just writes a PWM of 0 to the drivers) instead of letting the motors ramp up to some value above 100 to overcome the turning deadband. Like in Lab 5, I noticed that ramping up the PWM value above
+                    deadband to overcome static friction in any range below 10 would actually cause excess overshoots and jittery oscillations of the robot around the setpoint without ever settling at the setpoint when compared to just stopping. Although this does mean there is often some slight steady state error in my implementation when the robot settles, I found this preferable to the robot oscillating indefinitely.
+                  </p>
+
+                  <p class = "fw-bold"> Testing </p>
+
+                  <p> With my PD controller set up, I wanted to conduct two tests.</p>
+
+                  <p> The first of the tests is a setpoint test, which cycles through 3 different set points (0,90, 180, and back to 0) to see if the robot can orient itself to each setpoint from various starting orientations.</p>
+
+                  <p> After many rounds of tweaking gains, I settled on a Kp of 1, Ki of 0.05, CF = 1.4, Max PWM of 100, and to conduct the test on a table with the wheels of the car taped (to reduce static friction coefficient). </p>
+                  
+                  <p>Below is a the result of that test:</p>
+          
+                  <div style= "text-align: center;">
+                    <iframe src="https://drive.google.com/file/d/1jTN2JQjcetXKZmJFfL-lbuto3DkjK_Bp/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
                   </div>
 
-                  <div style = "text-align: center;"> (Thank you to my gf for helping me film!) </div>
+                  <p> <b>Setpoint Test Data: </b></p>
 
-                  <p> And below is the output of my sensor readings (CF = 1.8, Max PWM = 255, KP = 0.07, KI = 0.00001 starting position = 3m):</p>
+                  <p>Parameters: KP = 1, KD = 0.05, CF = 1.4, Max PWM = 100, starting position = 0 deg  </p>
+                  <img src= "assets/img/lab6/setpoint_graph.png" class ="img-fluid mb-3">
 
-                  <img src="assets/img/lab5/100run.png" class = "img-fluid mb-3">
+                  <p> As can be seen above, the robot is able to align itself to each setpoint, even successfully maneuvering a full 180 degree turn without excess overshoot thanks to the derivative term dampening.</p>
 
-                  <p> As we can see in the recorded ToF data, the initial interpolated distanc measurements oscillate between 0 and the actual measured distance as the ToF tries to stabilize and interpolate data until 2 full prior measurements from the ToF can be taken. </p>
+                  <p> The second of the tests is a orientation correction test, which shows the robot's ability to recover its setpoint after being pushed off course </p>
+            
+                  <p> Using the exact same parameters as before, the following results were obtained:</p>
 
-                  <p> We can also see that the robot quickly approaches the setpoint and although there is some small steady state error (likely from attenuating my integral term so much) the robot lands pretty close to the setpoint (settling around 380mm)! </p>
-                 
-                  <p> To calculate the max linear speed acheived, I saved a comma separated list of timestamped readings from the ToF. Using the plot as a reference, the steepest slope (after the interpolated values stabilizes) is in the jump from datapoints 2653.642 mm to 2236.0 mm which occured at times 1300412.0 ms, 1300423.0 ms (times on the chart are normalized on an initial program time of 1299301.0) respectively.
-                     This gives us a distance of around 417 mm travelled in 20 ms or a max linear speed of <b>20 m/s</b>, which seems a little too fast! -- this could very easily be likely to an outlier reading from the ToF sensor causing a huge jump in the interpolated value, and likely is not reliable for an accurate max linear speed calculation. </p>
+                  <div style= "text-align: center;">
+                    <iframe src="https://drive.google.com/file/d/1j_Uxcb7CLvmbWWNZUZIki3-RnLjnnjAN/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
 
-                  <p> Instead, I think a more reasonable approach could be to look at the average linear speed over the duration of the test, which over the span of about 3 seconds, my robot traveled a distance of 3 meters, or a maximum average linear speed of approximately <b>1 m/s.</b> 
+                  </div>
 
+                  <p> <b>Setpoint Test Data: </b></p>
 
-                    <div class="subheading mb-3">Collaboration Statement  </div>
+                  <p>Parameters: KP = 1, KD = 0.05, CF = 1.4, Max PWM = 100, starting position = 0 deg  </p>
 
+                  <img src = "assets/img/lab6/correction_graphs.png" class= "img-fluid mb-3">
 
+                  <p> As can be seen above, the robot successfully handles being pushed away from its setpoint, but as mentioned earlier, some slight steady state error remains due to my implementation of stopping the motors within the acceptable error range of +- 10 degrees, that could likely be fixed by adding an integral term. 
+                  </p>
+                
+
+                  <p> At this point I was pretty happy with the results of my PD controller.</p>
+
+                  <p> As described earlier, the D term seemed to help remove the harsh acceleration curve and rapid changes outputted by the proportional controller, and the proportional controller added the correction force to bring the robot towards the setpoint. </p>
+
+                  <div class="subheading mb-3">Derivative Term</div>
+
+                  <p class = "fw-bold"> Does it make sense to take the derivative of a signal that is the integral of another signal? </p>
+
+                  <p> Generally, it is redundant to take the derivative of a signal that is the integral of another signal. To reduce excess computation, we could simply use the signal itself as our 'derivative' value.</p>
+
+                  <p> However, when using the DMP, the outputs of the DMP are not integrated signal values but are distinct angle values, and there is no underlying signal that has been integrated to take the derivative of.  </p>
+
+                  <p class = "fw-bold"> Think about derivative kick. Does changing your setpoint while the robot is running cause problems with your implementation of the PID controller? </p>
+
+                  <p> Derivative kick occurs when a rapid change in the setpoint causes a spike in the control output of the PID controller due to the derivative term responding to this newfound rapid change in error. 
+                    I did have issues with a rapid change in setpoint causing a jump in derivative values initially but introducing a lowpass filter on the derivative term before outputting the final pid output helped with this significantly.  </p>
+                    
+                  <p class = "fw-bold"> Is a lowpass filter needed before your derivative term? </p>
+
+                  <p> Yes, the introduction of the lowpass filter, with an alpha of 0.014 greatly smoothed out the spikes in the controller outuput when a large change in error/setpoint occured. A snippet of my implementation is shown below:  </p>
+
+                  <script src="https://gist.github.com/evnleong/3d960f4b85f30f35de41787ae79080a1.js"></script>
+
+                  <div class="subheading mb-3">Implementation Discussion </div>
+
+                  <p class ="fw-bold"> 
+                  Have you implemented your code in such a way that you can continue sending an processing Bluetooth commands while your controller is running?
+                  This is essential for being able to tune the PID gains quickly and being able to change the setpoint while the robot is running.
+                  </p>
+
+                  <p> Yes, I have implemented my code to allow for BLE commands to be read and received while the control loop is running </p>
+
+                  <p> As can be seen in this snippet of my main loop below, data can be sent and received by the Nano while the PID control loop is running:</p>
+                  <script src="https://gist.github.com/evnleong/498d620256be11dbbc09e72a23324099.js"></script>
+
+                  <p> Additionally, as mentioned earlier, when the global setpoint variable is updated by the <i>SET_SETPOINT</i> command over BLE, future PID calculations are run on the new setpoint.</p>
+
+                  <p class ="fw-bold"> 
+                  Think about future applications of your PID controller with regards to navigation or stunts. Will you need to be able to update the setpoint in real time?
+                  </p>
+
+                  <p> Yes, I expect future applications of my PID controller in stunts and navigation to be require the ability to update the setpoint in real time to avoid/navigate around static or moving obstacles, or to follow a specific trajectory/path to initiate a stunt.</p>
+
+                  <p class = "fw-bold">
+                    Can you control the orientation while the robot is driving forward or backward? This is not required for this lab, but consider how this might be implemented
+                    in the future and what steps you can take now to make adding this functionality simple. </p>
+                  </p>
+
+                  <p> Yes, this functionality can be implemented in future labs by modifying my linear PID control loop to run in parallel with my orientation PID control loop to adjust the orientation of the robot while driving forwards or backwards. </p>
               </div>
               <div class="flex-shrink-0"><span class="text-primary"></span></div>
           </div>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="flex-grow-1">
+                <h3 class="mb-0">Collaboration Statement</h3>
+                <p> I referenced Stephan Wagner's website and DMP tutorial for this lab.</p>
+            <p> Additionally, thank you to Jeffrey Cai for advice regarding DMP setup and debugging! </p>
+            </div>
+            
+          </div>
       </div>
   </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
 
     
 </body>
