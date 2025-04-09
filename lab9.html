@@ -63,7 +63,51 @@
           <div class="d-flex flex-column flex-md-row justify-content-between">
               <div class="flex-grow-1">
                   <h3 class="mb-0">Lab Tasks </h3>
-                  <div class="subheading mb-3"> Task 1: 3 Successful Flips </div>
+                  <div class="subheading mb-3"> Task 1: Angular Control </div>
+
+                  <p class ="fw-bold"> Orientation control: Tune your PID orientation controller to allow your robot to do on-axis turns in small, accurate increments. If you choose this option, you can score up to 7.5 points in this lab.</p>
+
+                  <p> I started this week's lab by modifying my angular PD controller from Lab 6 to make a full 360 deg. rotation in small increments while simultaneously recording ToF measurements.  </p>
+
+
+                  <p class = "fw-bold">Please quantify and/or use graphs to document that your PID controller works well, and upload a video that shows if your robot turns (roughly) on axis. </p>
+
+                  <p> To prove that I was able to cycle through the setpoints, I plotted DMP yaw data over time, alongside the setpoint angle over time.</p>
+ 
+                  <p class ="fw-bold"> Given any potential drift in your sensor, the size and accuracy of your increments, and how reliably your robot turns on axis, reason about the average and maximum error of your map if you were to do an on-axis turn in the middle of a 4x4m square, empty room. </p>
+
+
+                  <p> Because I used the DMP for my angular measurements, I was. The size of my increments was, and the ranging error in the ToF sensors is given to be approximately 20 degrees. A maximum error of my map, given an on-axis turn in the middle of a 4x4m room would be approximately</p>
+
+                  <div class="subheading mb-3"> Task 2: Read out Distances</div>
+
+                  <p class = "fw-bold"> Execute your turn at each of the marked positions in the lab space: (-3,-2), (5,3), (0,3), and (5,-3). You are welcome to do more locations if you would like to improve your map. (If you are low on time, doing this in the Phillips hallway or at home to show that your concept works is okay).</p>
+                    
+                  
+                  <p class ="fw-bold"> During the turn, measure the distance using one or more ToF sensor(s) mounted on the robot. When the turn is completed return the data to the computer over Bluetooth. 
+                  To make it easier on yourself, start the robot in the same orientation in all scans. </p>
+
+                  <p class ="fw-bold"> Consider whether your robot behavior is reliable enough to assume that the readings are spaced equally in angular space, or if you are better off trusting the orientation from gyroscope values.</p>
+                  <p class ="fw-bold"> Sanity check individual turns by plotting them in polar coordinate plot. For simplicity assume that the robot is rotating in place. Do the measurements match up with what you expect?</p>
+                  
+                  <p class ="fw-bold"> Try rotating twice or more to see how precise your scans are.</p>
+
+                  <div class="subheading mb-3"> Task 3: Plot and Transform Data  </div>
+
+                  <p class = "fw-bold"> Compute the transformation matrices and convert the measurements from the distance sensor to the inertial reference frame of the room (these will depend on how you mounted your sensors on the robot.)
+
+                  <p> Next, we can use a rotational transformation matrix to convert Polar coordinates into Cartesian coordinates, to create a aggregate map of readings for the whole room. </p>
+                  <p class = "fw-bold"> Describe the matrices.</p>
+
+                  <p> Using the matrices described in Lecture 2, </p>
+
+                  <p class = "fw-bold">  Plot all of your TOF sensor readings in a single plot. Please assign different colors to data sets acquired from each turn.</p>
+
+
+                  <div class="subheading mb-3"> Task 4: Convert to Line-based Map </div>
+
+
+                  <p>Lastly, using the scatterplot created in Task 3, I fitted lines to the walls created </p>
 
           
                  
