@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Lab 8: Stunts! - Evan Leong</title>
+    <title>Lab 9: Mapping - Evan Leong</title>
     <link href="css/styles.css" rel="stylesheet" />
       <link rel="icon" type="image/x-icon" href="assets/img/profile_photo.jpg" />
       <!-- Font Awesome icons (free version)-->
@@ -58,44 +58,14 @@
     <!-- Lab 8 Section -->
     <section class="resume-section" id="lab8">
       <div class="resume-section-content">
-          <h2 class="mb-5">Lab 8: Stunts! </h2>
+          <h2 class="mb-5">Lab 9: Mapping </h2>
           <!-- Lab Task Div-->
           <div class="d-flex flex-column flex-md-row justify-content-between">
               <div class="flex-grow-1">
                   <h3 class="mb-0">Lab Tasks </h3>
                   <div class="subheading mb-3"> Task 1: 3 Successful Flips </div>
 
-                  <p> For this lab I decided to have the car do a flip.</p>
-
-                  <p> To begin the lab, I initially tried to drive the car as fast as possible towards the wall, and actively brake the car by setting all motor driver input pins to a PWM of 255. </p>
-
-                  <p> After much trial and error of adding on weight to the front of the car, using a higher friction surface, and hitting many walls, I was only able to get the car to flip over by adding a function to reverse the car after driving forwards. </p>
-
-                  <p> I've added an annotated snippet of the code below, but to perform the flip, the car essentially drives forward at a specified max speed for a set duration, and then immediately drives in reverse for another set duration. </p>
-
-                  <p> This abrupt change in momentum allows the car to flip cleanly.</p>
-
-                  <script src="https://gist.github.com/evnleong/9768d327faf91503d4dc6b8e15b59b66.js"></script>
-
-                  <p> I then added a function called "SET_DELAYS" which, similar to the debugging setup from Lab 5, allows me to remotely set specified delay periods to modify the open loop driving durations without having to reflash the board.</p>
-
-                  <script src="https://gist.github.com/evnleong/0cc36825546afdb6676568cf2c421498.js"></script>
-
-                  <p> As shown in the video below, I was able to complete 3 successful runs with this open loop setup, at a starting distance of 1.5m.
-                  </p>
-
-                    <div style="text-align: center;">
-                      <iframe src="https://drive.google.com/file/d/1V_e8gdm9Dg1wYl-azE8DJjqnnEV9Uzai/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
-                    </div> 
-                  <p>I also recorded the time to complete each stunt as well as timestamped ToF data and PWM input for my best run (Attempt #1).</p>
-
-                  <img src ="assets/img/lab8/stunt_results.png" class = "img-fluid mb-3">
-
-                  <div class="subheading mb-3"> Task 2: Bloopers </div>
-
-                  <div style = "text-align: center;">
-                    <iframe src="https://drive.google.com/file/d/1wvOOia_6VDAXrDHbgexpGZtFB5W-6VFp/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
-                  </div>
+          
                  
 
               </div>
