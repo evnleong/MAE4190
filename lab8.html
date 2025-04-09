@@ -1,0 +1,117 @@
+<!-- lab1a.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Lab 8: Stunts! - Evan Leong</title>
+    <link href="css/styles.css" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="assets/img/profile_photo.jpg" />
+      <!-- Font Awesome icons (free version)-->
+      <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+      <!-- Google fonts-->
+      <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+      <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+      <!-- Core theme CSS (includes Bootstrap)-->
+      <link href="css/styles.css" rel="stylesheet" />
+      <!-- Mathjax CDN -->
+      <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      <!-- Jquery -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <!-- Image Lightboxes-->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+  
+    <!-- Add any other necessary links/scripts here -->
+</head>
+<body id="page-top">
+    <!-- Navigation Bar -->
+       <!-- Navigation-->
+       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+            <span class="d-block d-lg-none">Evan Leong</span>
+            <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/profile_photo.jpg" alt="..." /></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse outer " id="navbarResponsive" style = "max-height: 50vh" >
+            <div class = "inner">
+                <ul class="navbar-nav">
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html">About</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1a.html">Lab 1: Part A</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1b.html">Lab 1: Part B</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab2.html">Lab 2: IMU </a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab3.html">Lab 3: ToF </a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab4.html">Lab 4: Motor Drivers and Open Loop Control</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab5.html">Lab 5: Linear PID and Interpolation</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab6.html">Lab 6: Orientation PID</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab7.html">Lab 7: Kalman Filtering</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab8.html">Lab 8: Stunts!</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Lab 8 Section -->
+    <section class="resume-section" id="lab8">
+      <div class="resume-section-content">
+          <h2 class="mb-5">Lab 8: Stunts! </h2>
+          <!-- Lab Task Div-->
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+              <div class="flex-grow-1">
+                  <h3 class="mb-0">Lab Tasks </h3>
+                  <div class="subheading mb-3"> Task 1: 3 Successful Flips </div>
+
+                  <p> For this lab I decided to have the car do a flip.</p>
+
+                  <p> To begin the lab, I initially tried to drive the car as fast as possible towards the wall, and actively brake the car by setting all motor driver input pins to a PWM of 255. </p>
+
+                  <p> After much trial and error of adding on weight to the front of the car, using a higher friction surface, and hitting many walls, I was only able to get the car to flip over by adding a function to reverse the car after driving forwards. </p>
+
+                  <p> I've added an annotated snippet of the code below, but to perform the flip, the car essentially drives forward at a specified max speed for a set duration, and then immediately drives in reverse for another set duration. </p>
+
+                  <p> This abrupt change in momentum allows the car to flip cleanly.</p>
+
+                  <script src="https://gist.github.com/evnleong/9768d327faf91503d4dc6b8e15b59b66.js"></script>
+
+                  <p> I then added a function called "SET_DELAYS" which, similar to the debugging setup from Lab 5, allows me to remotely set specified delay periods to modify the open loop driving durations without having to reflash the board.</p>
+
+                  <script src="https://gist.github.com/evnleong/0cc36825546afdb6676568cf2c421498.js"></script>
+
+                  <p> As shown in the video below, I was able to complete 3 successful runs with this open loop setup, at a starting distance of 1.5m.
+                  </p>
+
+                    <div style="text-align: center;">
+                      <iframe src="https://drive.google.com/file/d/1V_e8gdm9Dg1wYl-azE8DJjqnnEV9Uzai/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+                    </div> 
+                  <p>I also recorded the time to complete each stunt as well as timestamped ToF data and PWM input for my best run (Attempt #1).</p>
+
+                  <img src ="assets/img/lab8/stunt_results.png" class = "img-fluid mb-3">
+
+                  <div class="subheading mb-3"> Task 2: Bloopers </div>
+
+                  <div style = "text-align: center;">
+                    <iframe src="https://drive.google.com/file/d/1wvOOia_6VDAXrDHbgexpGZtFB5W-6VFp/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+                  </div>
+                 
+
+              </div>
+
+          </div>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="flex-grow-1">
+                <h3 class="mb-0">Collaboration Statement</h3>
+
+                <p> I referenced Stephan Wagner's website for this lab.</p>
+            </div>
+            
+          </div>
+      </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+
+    
+</body>
+</html>

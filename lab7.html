@@ -1,0 +1,329 @@
+<!-- lab1a.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Lab 7: Kalman Filter - Evan Leong</title>
+    <link href="css/styles.css" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="assets/img/profile_photo.jpg" />
+      <!-- Font Awesome icons (free version)-->
+      <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+      <!-- Google fonts-->
+      <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+      <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+      <!-- Core theme CSS (includes Bootstrap)-->
+      <link href="css/styles.css" rel="stylesheet" />
+      <!-- Mathjax CDN -->
+      <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      <!-- Jquery -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <!-- Image Lightboxes-->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+  
+    <!-- Add any other necessary links/scripts here -->
+</head>
+<body id="page-top">
+    <!-- Navigation Bar -->
+       <!-- Navigation-->
+       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+            <span class="d-block d-lg-none">Evan Leong</span>
+            <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/profile_photo.jpg" alt="..." /></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse outer " id="navbarResponsive" style = "max-height: 50vh" >
+            <div class = "inner">
+                <ul class="navbar-nav">
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html">About</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1a.html">Lab 1: Part A</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1b.html">Lab 1: Part B</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab2.html">Lab 2: IMU </a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab3.html">Lab 3: ToF </a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab4.html">Lab 4: Motor Drivers and Open Loop Control</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab5.html">Lab 5: Linear PID and Interpolation</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab6.html">Lab 6: Orientation PID</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab7.html">Lab 7: Kalman Filtering</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab8.html">Lab 8: Stunts!</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Lab 6 Section -->
+    <section class="resume-section" id="lab7">
+      <div class="resume-section-content">
+          <h2 class="mb-5">Lab 7: Kalman Filtering </h2>
+
+
+          <h3 class="mb-0"> Kalman Filter Background</h3>
+
+          <p>In this week's lab, I aimed to better understand the Kalman Filter and its application on our robot. To model the robot's motion, we use a linear system described by the following state-space representation discussed in class:</p>
+          
+          <p style = "text-align: center;">
+              <span id="mathjax-equation">
+                  \(\dot{x} = Ax + Bu\)
+              </span>
+          </p>
+      
+          <p>Where:</p>
+          <ul>
+              <li><b>\(\mathbf{x}\)</b> is the state vector, which represents the robot's position/distance to the wall at a given time.</li>
+              <li><b>\(\dot{\mathbf{x}}\)</b> is the time derivative of the state vector, indicating how the robot’s position is changing over time.</li>
+              <li><b>A</b> is the system matrix, which describes the dynamics of the robot and how the current state influences the rate of change of the state.</li>
+              <li><b>B</b> is the input matrix, which describes how the control input <b>u</b> affects the system's state.</li>
+              <li><b>u</b> is the control input, which represent the motor input commands that drive the robot's motion.</li>
+          </ul>
+      
+          <p>The dynamics of the system are affected by both the model's assumptions as well as the measurement noise of the ToF sensors.
+             The Kalman Filter is used to fuse these two sources of information -- model predictions and sensor measurements -- by accounting for the error in each,
+             resulting in a more accurate estimate of the robot's true state.</p>
+          <!-- Lab Task Div-->
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+              <div class="flex-grow-1">
+                  <h3 class="mb-0">Lab Tasks</h3>
+                  <div class="subheading mb-3"> Estimate Drag and Momentum</div>
+
+                  <p class = "fw-bold"> Choose your step response, u(t), to be of similar size to the PWM value you used in Lab 5 (to keep the dynamics similar). 
+                    Pick something between 50%-100% of the maximum u.</p>
+
+                  <p> To begin this week's lab, I decided on a step response value that was similar to the PWM value I used in my Lab 5 testing. 
+                      This way, the dynamics of the system would remain similar, ensuring that the constructed KF model would more closely reflect the behavior of the real-life system.
+                      As the majority of my testing had been conducted with a PWM value of 100, I selected a PWM value of 100 for this purpose. </p>
+                  
+                  <p class = "fw-bold">Make sure your step time is long enough to reach steady state (you likely have to use active braking of the car to avoid crashing into the wall).
+                     Make sure to use a piece of foam to avoid hitting to wall and damaging your car.</p>
+
+                  <p> Additionally, this step size of 100 was chosen to be just high enough to ensure I could reach a steady state velocity, but 
+                      also short enough that it would allow me to track a sufficent amount of sensor data points before braking/hitting a wall. </p>
+                   
+                  <p class = "fw-bold"> Show graphs for the TOF sensor output, the (computed) speed, and the motor input. Please ensure that the x-axis is in seconds.</p>
+
+                  <p> Using my PID controller code from Lab 5, I set the PWM limit of my controller to 100, and had the robot drive towards a wall to collect the following system data: </p>
+
+                  <img src = "assets/img/lab7/tof_initial.png" class = "img-fluid mb-3">
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/velocity_initial.png" width = 500 height = 500 class = "img-fluid mb-3">
+                  </div>
+                 
+                  <p class = "fw-bold"> Measure the steady state speed, 90% rise time, and the speed at 90% rise time. (Note, this doesn't have to be 90% rise time. You could also use somewhere between 60-90%, but the speed and time must correspond to get an accurate estimate for m.)</p>
+
+                  <p> Although the collected data from the ToF was fairly noisy (as evidenced in the graphs above), I was able to make rough estimates for the following system parameters for the KF model:</p>
+
+                  <ul>
+                    <p>Steady State Speed: <b>1.62 m/s.</b> </p>
+                    <p>90% Rise Time: <b> 1.4 seconds.</b>  </p>
+                    <p>Speed at 90% Rise Time: <b>1.458 m/s</b> </p>
+                  </ul>
+
+                  <p> I could then calculate the <i>d</i> and <i>m</i> terms using the following equations: </p>
+
+                  <p>At steady state, we can approximate drag as \( d = \frac{u_{ss}}{\dot{x}_{ss}} \)</p>
+
+                  <p>Thus, \( d = \frac{1N}{1.62 m/s}  \approx  0.617 kg/s  \) </p>
+
+                  <p>And we can approximate momentum using the following equation derived from lecture:
+                    \[
+                    m = -d \cdot \frac{t_r}{\ln(1 - d \cdot x_{ss})}
+                    \]
+                </p>
+
+                <p> Substituting our values for d, \(t_r\) and \(x_{ss}\), we get </p>
+
+                <p>\[
+                  m = -0.617 \cdot \frac{1.4}{\ln(1 - 0.9)} \approx .375 kg
+                  \]</p>
+
+                  <p class = "fw-bold"> When sending this data back to your laptop, make sure to save the data in a file
+                     so that you can use it even after your Jupyter kernel restarts.
+                  </p>
+
+                  <p> Lastly, I saved all of my collected data from this test-run to a .csv file on my laptop for future use.</p>
+
+                  <div class="subheading mb-3"> Initialize Kalman Filter (Python)</div>
+                
+                  <p class = "fw-bold"> Compute the A and B matrix given the terms you found above, and discretize your matrices. Be sure to note the sampling time in your write-up.</p>
+
+                  <p> Using the d and m terms I had calculated, I proceded with computing the A and B matrices for my system. Using our state space equations: </p>
+                
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/state_space.png" height = 400 width = 400 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p>We can obtain and validate our A and B matrices:</p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/A-B.png" height = 300 width = 300 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p>And to discretize these matrices for our discrete ToF readings, we can use the sample rate of our ToF Sensors to obtain the following: </p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/A-B-discrete.png" height = 300 width = 300 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p class = "fw-bold"> Identify your C matrix. Recall that C is a m x n matrix, where n are the dimensions in your state space, and m are the number of states you actually measure. </p>
+
+                  <p> Then, we can initialize our C matrix, a 1 x 2 matrix, as our state space has 2 dimensions and we measure 1 state -- position: </p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/C.png" height = 300 width = 300 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p>Note that our measured state has a positive coefficient as our measured ToF distances are all positive.</p>
+
+                  <p class = "fw-bold"> Initialize your state vector, x, e.g. like this: x = np.array([[-TOF[0]],[0]])</p>
+
+                  <p>Then, I created an initial state vector which takes in our initial ToF sensor measurement (with a positive coefficient as I measured positive distance to the wall) and initial velocity (0 m/s). </p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/init_noise.png" height = 400 width = 400 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p>In this snippet, I also included my initialization for the initial noise vector, which describes our uncertainty in our initial state.</p>
+
+                  <p>For our initial position noise, I referenced the +- 20mm ranging error value provided by the ToF sensor's datasheet:</p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/sensor_noise.png" height = 400 width = 400 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p>As instructed, I also reasoned about a non-zero value for the velocity noise. Knowing that the error in our initial velocity being 0 m/s is practically 0 as the robot is at rest initially, 
+                    (but could not be exactly 0 or the KF will not work) I instead chose an arbitrarily small value for variance of 25. </p>
+                  
+                  <p class = "fw-bold">For the Kalman Filter to work well, you will need to specify your process noise and sensor noise covariance matrices.</p>
+
+                  <p> Lastly, to finalize my inputs for the KF, I needed to define parameters for process and measurement noise.  </p>
+
+                  <p> These parameters: \( \sigma_1 \), \( \sigma_2 \), and \( \sigma_3 \), represent the uncertainty in our modeled velocity ,
+                     uncertainty in our modeled distance, and uncertainty in our measured ToF sensor readings respectively. </p>
+
+                  <p> Using the process described in lecture, I calculated the values for \( \sigma_1 \), \( \sigma_2 \) using the sampling time of my sensor.</p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/sigma_calc.png" height = 400 width = 400 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p> Substituting in a sampling time of .1s , we obtain a value of approximately 32 for \( \sigma_1 \) and \( \sigma_2 \) .  </p>
+
+                  <p> For \( \sigma_3 \), my sensor measurement noise, I used the sensor ranging error of 20mm in long distance mode as described previously from the datasheet.</p>
+
+                  
+                  <p> These 3 parameters are then used to build the covariance matrices, 'Sigma_u' and 'Sigma_z'.</p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/covariance.png" height = 600 width = 600 class = "img-fluid mb-3"> 
+                  </div>
+  
+                  <p> With all my inputs to the Kalman Filter finalized, I could then move on to test the filter on some sample ToF data in Jupyter Notebook.  </p>
+
+                  <div class="subheading mb-3">Implement and test your Kalman Filter in Jupyter </div>
+
+                  <p class = "fw-bold"> Be sure to include a discussion of all the parameters that affect the performance of your filter.</p>
+
+                  <p> In order to fine-tune my implementation for the Kalman Filter in simulation, I first wanted to explore how the various parameters to the KF affected the performance of the model. </p>
+
+                  <p> Increasing my values for \( \sigma_1 \) and \( \sigma_2 \) (parameters for process noise) will decrease my trust in the model, essentially placing more trust in the sensor readings.</p>
+
+                  <p> As shown in the graph below, with arbitrarily large values of \( \sigma_1 \) and \( \sigma_2 \) = 100, and maintaining \( \sigma_3 \) = 20 we get a curve that closely resembles the ToF sensor readings (essentially overfitting to the collected data), albeit still slightly skewed from the actual ToF measurements.</p>
+                  
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/var_too_high.png" height = 600 width = 600 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p>Alternatively, increasing my value for \( \sigma_3 \) (measurement noise) decreases my trust in the measured sensor readings and places more trust in my model.</p>
+
+                  <p> As shown in the graph below, maintaining values for \( \sigma_1 \) and \( \sigma_2 \) at 22, and increasing my value for \( \sigma_3 \) = 100, we get a model output curve that is extremely skewed from the actual ToF readings.</p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/var_too_low.png" height = 600 width = 600 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p> Additionally, the output of the Kalman Filter is also dependent on the drag and momentum parameters that were derived from our system identification conducted at the beginning of this lab. </p>
+
+                  <p> Ideally, a more rigorous and physically sound way of calculating these parameters for the system would result in a more accurate Kalman Filter than the estimation approach that I took in this lab.</p>
+
+                  <p> Taking all of these factors into account, I applied my knowledge of these parameters to the collected ToF data from the initializing run and plotted the data using Matplotlib. </p>
+
+                  <p class = "fw-bold"> Plot the Kalman Filter output to demonstrate how well your Kalman Filter estimated the system state.</p>
+
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/kf_final.png" height = 600 width = 600 class = "img-fluid mb-3"> 
+                  </div>
+
+                  <p> After some tweaking of parameters (as discussed above) we can see that the model fits the data that the system identification was performed on very well, as expected. </p>
+
+                  <p> The final parameters used in this simulation were  \( \sigma_1 \) and \( \sigma_2 \) = 22 ,  \( \sigma_3 \) = 20. </p>
+
+
+                  <p> Additionally, I also wanted to test my Kalman Filter with the same parameters on a recorded run from Lab 5 with a different max PWM limit. In this trial, the max PWM was restrained to just 60. </p>
+  
+                  <p> Here were the results of that run: </p>
+                  <div style = "text-align: center;">
+                    <img src = "assets/img/lab7/kf_test.png" height = 600 width = 600 class = "img-fluid mb-3"> 
+                  </div>
+                  
+                  <div class="subheading mb-3">Implement Kalman Filter on Robot </div>
+
+
+                  <p class ="fw-bold"> If you have time, integrate the Kalman Filter into your Lab 5 PID solution on the Artemis. 
+                    Before trying to increase the speed of your controller, 
+                    use your debugging script to verify that your Kalman Filter works as expected.  </p>
+      
+                  <p> Lastly, with the performance of the KF verified, I moved on to integrating the Kalman Filter on my robot.</p>
+
+                  <p> The code to initialize the input parameters for the KF is shown below: </p>
+
+                  <script src="https://gist.github.com/evnleong/04faa1faa0b05c576e2d1940a290c08d.js"></script>
+
+                  <p> As much of the initialization and setup for the KF was a rewriting of the steps explained earlier for initializing the input parameters to the KF, 
+                    I've added annotations directly to the code to clarify my methodology for brevity.</p>
+
+                  <p> Below, I've also attached relevant annotated code snippet for the main PID control loop: </p>
+
+                  <script src="https://gist.github.com/evnleong/26685d5706beca8ba44e3c2ea2d8d607.js"></script>
+
+                  <p> Important to highlight is that the Kalman Filter runs unconstrained from the sampling rate of the ToF sensor. When a new ToF data sample is not availble, the Kalman Filters' prediction step runs,
+                     updating the robot's known current distance. </p>
+
+                  <p> And lastly, I've attached an annotated code snippet for the KF function that runs with each loop iteration:</p>
+
+                  <script src="https://gist.github.com/evnleong/e6a7c080dff40c9abdb8e91a584960a7.js"></script>
+
+                  <p> Using a max PWM limit of 100, I ran a PID test using the output of the Kalman Filter as the input to my proportional controller from Lab 5. </p>
+
+                  <p class ="fw-bold"> Be sure to demonstrate that your solution works by uploading videos and by plotting corresponding raw and estimated data in the same graph.</p>
+
+                  <p> Here is a video of the results of the robot using the KF output as input to the P controller from Lab 5, successfully stopping within 1 foot of an obstacle:</p>
+
+                  <div style = "text-align: center;">
+                    <iframe src="https://drive.google.com/file/d/1oE_cPllywehuQklWnsLw_1ckapK7U3d6/preview" width="320" height="240" allow="autoplay" allowfullscreen></iframe>
+                  </div>
+                  <p> And below is the data collected from the run:</p>
+
+                  <div style = "flex-direction: row; text-align: center;">
+                    <img src = "assets/img/lab7/distance_v_time_robot.png" height = 700 width = 40% class = "img-fluid mb-3"> 
+                    <img src = "assets/img/lab7/pwm_v_time_robot.png" height = 700 width = 40% class = "img-fluid mb-3"> 
+                  </div>
+
+              </div>
+              <div class="flex-shrink-0"><span class="text-primary"></span></div>
+          </div>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="flex-grow-1">
+                <h3 class="mb-0">Collaboration Statement</h3>
+                <p> I referenced Nila Narayan and Mikayla Lahr's websites for this lab.</p>
+            </div>            
+          </div>
+      </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+
+    
+</body>
+</html>
