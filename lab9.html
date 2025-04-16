@@ -65,52 +65,207 @@
                   <h3 class="mb-0">Lab Tasks </h3>
                   <div class="subheading mb-3"> Task 1: Angular Control </div>
 
-                  <p class ="fw-bold"> Orientation control: Tune your PID orientation controller to allow your robot to do on-axis turns in small, accurate increments. If you choose this option, you can score up to 7.5 points in this lab.</p>
+                  <p class ="fw-bold"> Orientation Control: Tune your PID orientation controller to allow your robot to do on-axis turns in small, accurate increments. 
+                    If you choose this option, you can score up to 7.5 points in this lab.</p>
 
-                  <p> I started this week's lab by modifying my angular PD controller from Lab 6 to make a full 360 deg. rotation in small increments while simultaneously recording ToF measurements.  </p>
+                  <p> I started this week's lab by modifying my angular PD control loop from Lab 6 to make a full 360 degree rotation in small increments while simultaneously capturing and recording ToF measurements.  </p>
+
+                  <p> To accomplish this, I first modified my control loop to include an incrementing function that iterates to the next setpoint on a given delay interval. 
+                    As shown in the snippet below, the function iterates through setpoint angles of 0 to 360 in 15 degree increments: </p>
+
+                    <script src="https://gist.github.com/evnleong/0cbda6264b885ea2a75518e2206d3821.js"></script>
 
 
-                  <p class = "fw-bold">Please quantify and/or use graphs to document that your PID controller works well, and upload a video that shows if your robot turns (roughly) on axis. </p>
+                  <p> For this loop to work, I needed to make a slight modification to my get_yaw() function, which returns the current yaw angle calculated by the DMP.</p>
+                  <p> Previously, this function returned values from a range of {-180,180}, but to align with my desired angles of 0 to 360, I needed to add a correction of 360 degrees to negative angles to correctly map values into the (0,360) degree range. </p>
+                  <script src="https://gist.github.com/evnleong/508a20741d51986b6fe2d1c306b60660.js"></script>
 
-                  <p> To prove that I was able to cycle through the setpoints, I plotted DMP yaw data over time, alongside the setpoint angle over time.</p>
+                  <p> Lastly, I needed to extend my implementation for the pid_to_pwm_angular() function to include a check to take ToF measurements only when the robot has settled at a setpoint.</p>
+
+                  <script src="https://gist.github.com/evnleong/8073d3364acb3f13f3645986a7112360.js"></script>
+
+                  <p>By implementing this check, the robot only sets the ToF measurement flag when it has settled at its new setpoint. </p>
+
+                  <p> Altogether, this approach allowed me to reuse the majority of my angular PD controller code to cycle through setpoints on a timed interval while collecting ToF recordings. </p>
+
+                  <p class = "fw-bold">Please upload a video that shows if your robot turns (roughly) on axis. </p>
+
+                  <p> Additionally, I've also attached a video of my mapping program successfully running on the robot at 3 different measurement locations:</p>
+
+                  <div style= "text-align: center;">
+                    <iframe src="https://drive.google.com/file/d/1UDwiIIam1Qske9vNG3K5yDRAsXPpwl3j/preview" width="500" height="350" allow="autoplay" allowfullscreen></iframe>
+                  </div>
+
+                  <p> 
+                    As can be seen in the video above, the first run of the controller at the (-3,-2) measurement point has an initial overshoot and overcorrection, resulting in the robot making a full rotation before settling at its new setpoint, 
+                    which resulted in the robot drifting slightly out of frame.</p>
+                    
+                    
+                    <p>I was still able to use the measurements from this run by adding a manual offset of +.5 ft in the x axis for datapoints recorded at this location 
+                    to account for the altered measurement point. I'm still unsure as to what caused this error in the first place, but I speculate that this was likely due to my controller gains or the varying floor conditions from measurement point to measurement point. As seen in the clip, 
+                    this problem resolved itself in all later scans. </p>
+
  
                   <p class ="fw-bold"> Given any potential drift in your sensor, the size and accuracy of your increments, and how reliably your robot turns on axis, reason about the average and maximum error of your map if you were to do an on-axis turn in the middle of a 4x4m square, empty room. </p>
 
+                  <p> As I had chosen to use the DMP instead of the raw angular data from the drift-prone gryoscope, 
+                    I was fairly confident that the potential drift from the sensor was relatively negligble. </p>
 
-                  <p> Because I used the DMP for my angular measurements, I was. The size of my increments was, and the ranging error in the ToF sensors is given to be approximately 20 degrees. A maximum error of my map, given an on-axis turn in the middle of a 4x4m room would be approximately</p>
+                  <p>
+                    Instead, the accuracy and reliability of my robots turns, as well as the ranging error in the ToF sensors were a much greater concern for me. 
+                    The size of my turning increments was 15 degrees, and my PD controller code allowed for 5 degrees of error in either direction from the setpoint.  
+                    Additionally, the ranging error in the ToF sensors in long distance mode was given to be approximately +- 20mm.  </p>
+                    
+                    <p>Assuming these error conditions and the fact that my robot was able to make relatively on-axis turns, we can simplify our problem to use basic trigonometry to roughly estimate the maximum error of the map. </p>
+                    <p> If we have an angular error of +-5 degrees, and a distance from the wall of 2 meters in a 4mx4m arena (if the robot is placed in the middle), with an additional + 20mm to account for maximum ranging error of the ToF sensor,
+                    </p>
+                      We can then solve for the maximum lateral error along the edges of the map using the following formula:
+                      \( 2.02m \cdot \sin(5^\circ) = 17.6 cm\)
+                   </p>
+
+                   <p> Thus, a rough estimate for the maximum error of the map given these assumptions is around 17.6 cm. We would also expect this error to grow rapidly if the arena was any bigger, or if the allowed angular error in the turns increased.</p>
 
                   <div class="subheading mb-3"> Task 2: Read out Distances</div>
 
                   <p class = "fw-bold"> Execute your turn at each of the marked positions in the lab space: (-3,-2), (5,3), (0,3), and (5,-3). You are welcome to do more locations if you would like to improve your map. (If you are low on time, doing this in the Phillips hallway or at home to show that your concept works is okay).</p>
-                    
-                  
+
+                  <p> As shown in the previous clip, I placed the robot at all 4 measurement points and ran my angular PD control code to map ToF datapoints at each location.</p>
+
                   <p class ="fw-bold"> During the turn, measure the distance using one or more ToF sensor(s) mounted on the robot. When the turn is completed return the data to the computer over Bluetooth. 
-                  To make it easier on yourself, start the robot in the same orientation in all scans. </p>
+                    To make it easier on yourself, start the robot in the same orientation in all scans. When the turn is completed return the data to the computer over Bluetooth. </p>
+
+                  <p> I then added functions on both the Jupyter notebook and robot, similar to previous labs, to transmit the collected data back to my laptop. </p>
+
+                  <p>Python function to receive and record measured data:</p>
+                  <div style= "text-align: center;">
+                  <img src= "assets/img/lab9/send_python.png" class ="img-fluid mb-3">
+                  </div>
+
+                  <p>Arduino function to transmit recorded ToF, IMU, and setpoint data: </p>
+                  <script src="https://gist.github.com/evnleong/0236832f0921161505f23a1579e40cc6.js"></script>
 
                   <p class ="fw-bold"> Consider whether your robot behavior is reliable enough to assume that the readings are spaced equally in angular space, or if you are better off trusting the orientation from gyroscope values.</p>
-                  <p class ="fw-bold"> Sanity check individual turns by plotting them in polar coordinate plot. For simplicity assume that the robot is rotating in place. Do the measurements match up with what you expect?</p>
-                  
-                  <p class ="fw-bold"> Try rotating twice or more to see how precise your scans are.</p>
 
+                  <p> After recording and analyzing the received yaw data from the robot, 
+                    I found the robot behavior to be reliable enough that the readings were spaced equally in angular space, as the robot settled within 5 degrees of each of the desired setpoints nicely.
+                     Thus, in future calculations, I utilized the commanded setpoint as the expected angle of the robot.</p>
+
+                  <p class ="fw-bold"> Sanity check individual turns by plotting them in polar coordinate plot. For simplicity assume that the robot is rotating in place. Do the measurements match up with what you expect?</p>
+
+                  <p>To sanity check individual turns of the robot, I created the following polar plots at each of the 4 locations. As I had mounted ToF sensors on opposing sides of the robot,
+                     I was also able to check the repeatability of my measurements by comparing the front ToF sensor measurements with the rear ToF sensor measurements collected 180 degrees offset.</p>
+                  
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/03line.png" width = 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/03scatter.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/-3-2line.png" width= 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/-3-2scatter.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/53line.png" width= 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/53scatter.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+            
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/5-3line.png" width= 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/5-3scatter.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+                  <p> As can be seen in the plots above, the 2 ToF sensors corroborated each others' readings fairly well,
+                     with the exception of the measurements collected at (-3,-2). This was likely due to the overcorrection issue which was addressed earlier in the lab.</p>
+                  
+                  <p> In that specific case, the ToF sensor readings from the front ToF sensor, ToF 2 , were completely inaccurate, which resulted in me just using ToF 1's readings for my future plots.</p>
+                 
                   <div class="subheading mb-3"> Task 3: Plot and Transform Data  </div>
 
-                  <p class = "fw-bold"> Compute the transformation matrices and convert the measurements from the distance sensor to the inertial reference frame of the room (these will depend on how you mounted your sensors on the robot.)
+                  <p class = "fw-bold"> Compute the transformation matrices and convert the measurements from the distance sensor to the inertial reference frame of the room (these will depend on how you mounted your sensors on the robot.) </p>
 
-                  <p> Next, we can use a rotational transformation matrix to convert Polar coordinates into Cartesian coordinates, to create a aggregate map of readings for the whole room. </p>
+                  <p> Next, we can use a 2D rotational transformation matrix to convert our Polar coordinates into Cartesian coordinates, to create a aggregate map of readings for the whole room. </p>
+
                   <p class = "fw-bold"> Describe the matrices.</p>
 
-                  <p> Using the matrices described in Lecture 2, </p>
+                  
+                  <p> Using the transformation matrices described in Lecture 2, our rotational transformation matrix to apply to our 1 dimensional ToF readings is: </p>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/rotationmatrix.png" width= 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+
+                  <p> We can apply this rotation matrix using Jupyter notebook in the following implementation:</p>
+
+                  <script src="https://gist.github.com/evnleong/fffc317153bf67b5ffae9a94a8b3d6f4.js"></script>
+
+                  <p> Essentially, we parse the received ToF data from the stored arrays, and apply the rotational transformation matrix to each reading. We also apply a linear transformation corresponding to the measurement location with respect to the origin. For example, in the snippet shown above,
+                     if measurements are taken at (0,3), we adjust the y coordinate of readings by 3 ft = 3*304mm. 
+                    We additionally need to take into consideration that the sensors are located 180 degrees apart, so we need to apply a 180 degree or (pi radians) adjustment to the rear ToF sensor readings to bring them in line with the front ToF sensor readings. 
+                  </p>
+
+                  <p> As shown in the left hand side of the following generated plots, this code gives us an immense amount of noisy data points from the ToF sensors.</p>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/03transform.png" width= 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/03averaged.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/53transform.png" width= 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/53averaged.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/-3-2transform.png" width= 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/-3-2averaged.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/5-3transform.png" width= 400 height = 400 class ="img-fluid mb-3">
+                    <img src = "assets/img/lab9/5-3averaged.png" width = 400 height = 400 class ="img-fluid mb-3">
+                  </div>
+
+                  <p> To counteract this, I wrote a script to iterate through each setpoint and take the average of the ToF readings at each setpoint, which resulted in the much cleaner plots shown on the right.</p>
+
+                  <script src="https://gist.github.com/evnleong/01e0497e53b6a02380b2ee5670099056.js"></script>
+
 
                   <p class = "fw-bold">  Plot all of your TOF sensor readings in a single plot. Please assign different colors to data sets acquired from each turn.</p>
+
+                  <p> Combining all of the datapoints from the previously generated plots, I created a singular map and colored each of the datasets distinctly: </p>
+
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/worldmapblank.png" width= 600 height = 600 class ="img-fluid mb-3">
+                  </div>
 
 
                   <div class="subheading mb-3"> Task 4: Convert to Line-based Map </div>
 
+                  <p>Lastly, using the world map created in Task 3, I manually fitted lines to the collected points, following the highest density point clusters.  </p>
 
-                  <p>Lastly, using the scatterplot created in Task 3, I fitted lines to the walls created </p>
+        
+                  <div style = "text-align: center" class ="flex-column">
+                    <img src = "assets/img/lab9/worldmapestimate.png" width= 600 height = 600 class ="img-fluid mb-3">
+                  </div>
 
-          
+                  <p> Additionally, to prepare for Lab 10, I created two lists containing the end points of the overlaid lines in the format (x_start, y_start) and (x_end, y_end). </p>
+
+                  <p> I also wanted to see how closely my points aligned with the world map in reality. </p>
+                  <p> Below is my robot's estimated map overlaid with the true world boundary: </p>
                  
+                  <div style = "text-align: center" class ="flex-column">
+                    
+                  <img src = "assets/img/lab9/worldmaptrue.png" width = 600 height = 600 class ="img-fluid mb-3">
+
+                  </div>
+
+                  <p> Overall, I think the data collected matched fairly well with the true boundary of the world with the exception of the square obstacle in the top right corner.
+                    For some reason, the entire left side of that obstacle failed to be mapped. One possible reason this could have happened is that the angular increments for my angular controller 
+                    were so large that the robot missed the corner of the square obstacle in between turns, or overshot its distance resulting in points that were discarded as noise. </p>
+
+                  <p> For future iterations, I would like to see how increasing the granularity of the angular increments of the mapping sequence would affect the resolution and accuracy of the resulting world map, as I suspect it might help to improve the detection of smaller obstacles like these.</p>
 
               </div>
 
@@ -120,7 +275,7 @@
             <div class="flex-grow-1">
                 <h3 class="mb-0">Collaboration Statement</h3>
 
-                <p> I referenced Stephan Wagner's website for this lab.</p>
+                <p> I referenced Nila Narayan's website for this lab.</p>
             </div>
             
           </div>
