@@ -1,0 +1,197 @@
+<!-- lab1a.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Lab 9: Mapping - Evan Leong</title>
+    <link href="css/styles.css" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="assets/img/profile_photo.jpg" />
+      <!-- Font Awesome icons (free version)-->
+      <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+      <!-- Google fonts-->
+      <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+      <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+      <!-- Core theme CSS (includes Bootstrap)-->
+      <link href="css/styles.css" rel="stylesheet" />
+      <!-- Mathjax CDN -->
+      <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      <!-- Jquery -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <!-- Image Lightboxes-->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+  
+    <!-- Add any other necessary links/scripts here -->
+</head>
+<body id="page-top">
+    <!-- Navigation Bar -->
+       <!-- Navigation-->
+       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+            <span class="d-block d-lg-none">Evan Leong</span>
+            <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/profile_photo.jpg" alt="..." /></span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse outer " id="navbarResponsive" style = "max-height: 50vh" >
+            <div class = "inner">
+                <ul class="navbar-nav">
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.html">About</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1a.html">Lab 1: Part A</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab1b.html">Lab 1: Part B</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab2.html">Lab 2: IMU </a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab3.html">Lab 3: ToF </a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab4.html">Lab 4: Motor Drivers and Open Loop Control</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab5.html">Lab 5: Linear PID and Interpolation</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab6.html">Lab 6: Orientation PID</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab7.html">Lab 7: Kalman Filtering</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab8.html">Lab 8: Stunts!</a></li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab9.html">Lab 9: Mapping </a> </li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab10.html">Lab 10: Localization (sim) </a> </li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab11.html">Lab 11: Localization (real) </a> </li>
+                  <li class="nav-item"><a class="nav-link js-scroll-trigger" href="lab12.html">Lab 12: Planning and Execution </a> </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Lab 8 Section -->
+    <section class="resume-section" id="lab8">
+      <div class="resume-section-content">
+          <h2 class="mb-5">Lab 10: Localization (sim) </h2>
+          <!-- Lab Task Div-->
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+              <div class="flex-grow-1">
+
+                <h3 class="mb-0">Lab Background</h3>
+
+                <p> The purpose of this week's lab was to perform grid-based localization on our robot running in simulation using a Bayes Filter.</p>
+
+                  <h3 class="mb-0">Lab Tasks </h3>
+                  <div class="subheading mb-3"> Task 1: Compute_Control() </div>
+
+                  <p>The first function I implemented for this lab was <code>compute_control()</code>. 
+                  The <code>compute_control()</code> function takes the odometry estimated current and previous robot positions at timestep t and t-1 respectively, 
+                  and returns the control input performed to move between these two poses. </p>
+
+
+                  <script src="https://gist.github.com/evnleong/7574daed91dcbfa54cd9d72a03ea68fd.js"></script>
+
+                  <p>The odometry motion model, as illustrated below in lecture:</p>                  
+
+<div style="text-align: center;">
+  <img src="assets/img/lab10/odom_diagram.png" height="400" width="400" class="img-fluid mb-3">  
+</div>
+
+<p>
+  consists of 3 components:
+  an initial rotation 
+  \( \delta_{\text{rot1}} \), a translation \( \delta_{\text{trans}} \), 
+  and a final rotation \( \delta_{\text{rot2}} \).
+
+
+</p>
+
+<p> Using trigonometry, we can derive equations to solve for these 3 components from the given poses as shown in class: </p>
+
+<div style="text-align: center;">
+  <img src="assets/img/lab10/odom_equation.png" height="400" width="400" class="img-fluid mb-3">  
+</div>
+
+
+<p> Later, we will use these control inputs as part of the prediction 
+  step of the Bayes filter to update the belief distribution based on the robot's movement.</p>
+
+                 
+
+                  <div class="subheading mb-3"> Task 2: Odom_motion_model() </div>
+
+                  <p> Next, I implemented the <code>odom_motion_model()</code> function. <code> odom_motion_model()</code> first computes <i> \( \hat{u} \)</i>, the control input from the current and previous odomotry poses, and 
+                     then computes the probability that the robot transitioned from its previous pose to the current pose given that control input. 
+                  
+                     <script src="https://gist.github.com/evnleong/660320162b280442cfd26ca13a5f6d24.js"></script>
+    
+                 
+                  <div class="subheading mb-3"> Task 3: Prediction_Step()  </div>
+
+                  <p> Next, I implemented the <code>prediction_step()</code> function.</p> The <code> prediction_step()</code>
+                   function uses the odometry motin model to update the robot's belief of where it could be based on its movements. 
+
+                  <p> We first start by initializing an empty grid with the same dimensions as our map to store our predicted belief in its position.</p>
+
+                  <p> We then iterate through all previous poses within the grid. These poses represent the robot's possible locations in the grid from the prior timestep</p>
+
+                  <p> For each previous pose with a belief greater than 0.0001, we loop through all possible current poses. </p>
+
+                  <p> For each previous pose and current pose pair , we can compute the transition probability as described by the odom_motion_model() function that we implemented earlier, to estimate the likelihood that the robot moved from previous to current pose given the control input. </p>
+
+                  <p> Multiplying this probability by the belief at the previous pose, accumulating it onto the belief at the current pose, and normalizing across the grid, we can generate a probability distribution, where each cell in the grid represents the likelihood for the robot being in that state.</p>
+
+                  <script src="https://gist.github.com/evnleong/fd63f2db60683cb000157198acae9f61.js"></script>
+
+                  <p> Important to note is that the threshold parameter of 0.0001 is set to save on computation by excluding poses with very low probability.</p>
+                  <p> The threshold value of 0.0001 was selected through trial and error to balance accuracy and compute time. </p>
+
+
+                  <div class="subheading mb-3"> Task 4: Sensor_model() </div>
+
+                  <p> The <code>sensor_model() </code> function takes a series of observations within a cell, and returns the likelihood of each sensor measurement occuring given a sensor standard deviatio of sigma. </p>
+
+                  <script src="https://gist.github.com/evnleong/7acc8b82e1819f3a237d1b77876f398f.js"></script>
+
+                  <div class="subheading mb-3"> Task 5: Update_Step()   </div>
+
+                  <p>Lastly, to complete the Bayes Filter, I implemented the <code>update_step()</code> function.  
+                    The update step refines the robot’s predicted belief (computed during the prediction step) by incorporating current sensor measurements.  
+                    Using the sensor model, we compute the likelihood of each possible pose given the observations.  
+                    By multiplying this likelihood with the predicted belief and normalizing the result, we obtain an updated probability distribution that represents the robot's corrected belief about its position.</p>
+                    
+
+                  <script src="https://gist.github.com/evnleong/c5b8ba79da60abfeec04d8c411dbac46.js"></script>
+
+
+                  <div class="subheading mb-3"> Task 6: Run Bayes Filter on Sample Trajectory  </div>
+
+                  <p> The last step in the lab was to run the Bayes Filter on the given sample trajectory. 
+                    In the video below, the odometry is plotted in red, the ground truth in green, and the Bayes filter corrected belief in light blue. 
+                  </p>
+
+                  <p>As we can see, despite the odometry being wildly inaccurate, the most probable state given by the Bayes filter very closely matches the ground truth trajectory. </p>
+
+
+                  <p> My inference for when the Bayes Filter works best is in areas where the robot is closest to the walls, and this hypothesis is reflected in the results shown below. 
+                    This is likely due to sensor measurements being more consistent and reliable at short distances, as opposed to when the robot is located further away from any obstacles. 
+
+
+                  <div style = "text-align: center;"> 
+                    <iframe src="https://drive.google.com/file/d/1XVEleB5h-m1ooHfUrw6eP9iwVdIF4nuB/preview" width="640" height="480" allow="autoplay" allowfullscreen></iframe>
+
+                  </div>
+
+                  <p> Lastly, I've attached a screenshot of the outputted most probable state after each iteration of the Bayes Filter alongside the ground truth:  </p>
+
+                  <div style="text-align: center;">
+                    <img src="assets/img/lab10/prediction.png" height="500" width="500" class="img-fluid mb-3">  
+                  </div>
+
+              </div>
+
+          </div>
+
+          <div class="d-flex flex-column flex-md-row justify-content-between">
+            <div class="flex-grow-1">
+                <h3 class="mb-0">Collaboration Statement</h3>
+
+                <p> I referenced Nila Narayan's website for this lab.</p>
+            </div>
+            
+          </div>
+      </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+
+    
+</body>
+</html>
