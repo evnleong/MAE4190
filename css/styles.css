@@ -10972,9 +10972,9 @@ section.resume-section .resume-section-content {
 }
 
 /* Github Gist Style Customization */
-.gist {width:100% !important;}
+.gist {width:90% !important;}
 .gist-file
-.gist-data {max-height: 300px;max-width: 100%;}
+.gist-data {max-height: 300px;max-width: 90;}
 
 
 
